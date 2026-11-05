@@ -1,36 +1,41 @@
-# Acervo Digital — proyecto para GitHub Pages
+# ACERVO DIGITAL — ARCHIVOS CONECTADOS
 
-Aplicación web 100 % en español creada para Andi Aguirre. Permite construir el acervo documentario en el orden de sus apartados, o foliar un PDF existente. Incluye vista previa de las páginas reales, miniaturas, casillas **No foliar**, eliminación/restauración de hojas, color del folio, modo oscuro y el apartado de adendas condicional.
+Aplicación para crear un acervo de documentos PDF o foliar un PDF existente. Incluye vista previa de las páginas reales, casillas **No foliar**, eliminar/restaurar hojas, colores de folio, adendas y modo oscuro.
 
-## Cómo probar en tu computadora
+## ¡IMPORTANTE! Todos los archivos van JUNTOS en UNA carpeta
 
-1. **Descomprime** el ZIP (no abras `index.html` dentro del ZIP).
-2. Abre la carpeta `ACERVO_DIGITAL_PROYECTO` y haz doble clic en **`index.html`**.
-3. Para explorar sin documentos reales, pulsa **Probar foliado de PDF**; aparecerán seis páginas de ejemplo y podrás cambiar cuáles se folian o eliminan, y descargar el resultado.
-4. Para PDF reales, necesitas **Internet** en el momento de abrirlos: el navegador carga las bibliotecas `pdf-lib` y `PDF.js` desde CDN. El sitio no envía tus documentos a un servidor; se procesan localmente en el navegador.
+```text
+ACERVO_DIGITAL_GITHUB_CONECTADO/
+├── index.html
+├── estilos.css
+├── datos.js
+├── procesamiento.js
+├── acervo.js
+├── vista-previa.js
+├── iniciar.js
+└── README.md
+```
 
-## Cómo subir a GitHub Pages
+**No cambies los nombres ni subas solo `index.html`.** La versión anterior podía fallar si las carpetas `css` y `js` no se conservaban; esta versión usa rutas `./archivo` para que todos estén al mismo nivel.
 
-1. Crea un repositorio en GitHub o abre uno existente.
-2. En `Add file → Upload files`, sube **`index.html`** y las carpetas **`css/`** y **`js/`**, preservando su estructura. No subas solo el HTML ni el ZIP comprimido.
-3. Confirma con **Commit changes**.
-4. En `Settings → Pages`, selecciona `Deploy from a branch`, rama `main`, carpeta `/ (root)` y guarda.
-5. Abre la dirección que muestre GitHub Pages.
+## Probar en Windows
+1. Descarga el ZIP.
+2. Clic derecho al ZIP → **Extraer todo**.
+3. Abre la carpeta extraída y haz doble clic en `index.html`.
+4. En la esquina superior aparecerá **«✓ Archivos conectados»**.
+5. Pulsa **«Probar foliado de PDF»** y luego **«Ver hojas y seleccionar No foliar»**.
+6. Marca las páginas sin folio, elimina/restaura y descarga el PDF de ejemplo.
 
-## Archivos del proyecto
+## Subir a GitHub Pages
+1. Abre el repositorio de GitHub → **Add file → Upload files**.
+2. **Selecciona todos estos archivos extraídos juntos**: `index.html`, `estilos.css`, `datos.js`, `procesamiento.js`, `acervo.js`, `vista-previa.js`, `iniciar.js` (opcional `README.md`).
+3. Confirma los cambios (**Commit changes**).
+4. En **Settings → Pages**, selecciona **Deploy from a branch**, rama **main** y carpeta **/(root)**.
+5. Abre el enlace que indique GitHub Pages. Si actualizaste el proyecto, recarga con **Ctrl + F5**.
 
-- `index.html`: estructura e interfaz.
-- `css/estilos.css`: colores, modo oscuro, diseños y tarjetas de miniaturas.
-- `js/datos.js`: apartados, reglas y documentos de prueba.
-- `js/acervo.js`: carga de archivos y gestión del acervo.
-- `js/procesamiento.js`: lectura, unión, foliado y descarga de PDF.
-- `js/vista-previa.js`: galería visual con miniaturas y edición página por página.
-- `js/iniciar.js`: inicialización y eventos de la interfaz.
+## Nota de bibliotecas PDF
+La prueba incorporada funciona sin Internet. Para abrir, mostrar y editar **PDF reales**, la aplicación utiliza dos bibliotecas PDF desde una CDN (pdf-lib y PDF.js), por lo que requiere conexión a Internet para cargarlas. **Los documentos no se envían a esa CDN**: se procesan en tu navegador. La numeración comienza en 0001 y utiliza cuatro dígitos.
 
-## Cómo usar la vista previa
+Los PDF protegidos con contraseña no son compatibles. Procesar un PDF firmado digitalmente puede invalidar su firma.
 
-Tras cargar los PDF, pulsa **Ver hojas y seleccionar «No foliar»**. Las miniaturas muestran las páginas, y cada una incluye una casilla **No foliar** (conserva la hoja sin número) y un botón **Eliminar** (la quita del PDF final). Una hoja eliminada puede restaurarse. La numeración se recalcula después de hacer cambios; sigue teniendo cuatro dígitos y se coloca arriba a la derecha.
-
-En **Crear acervo**, activa previamente **Agregar folios al acervo** si deseas editar la foliación. Si desactivas los folios del acervo, el PDF final se une sin números. La opción **No foliar reversos** es adicional y trata como reversos las páginas pares del PDF final (no identifica automáticamente la cara física).
-
-**Limitaciones:** Los PDF cifrados o protegidos con contraseña no son compatibles. Guardar/modificar un PDF que ya tiene firma digital puede invalidar esa firma. Para miles de hojas grandes, el procesamiento depende de la memoria del equipo y navegador.
+Creado por Andi Aguirre.

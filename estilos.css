@@ -113,3 +113,13 @@ body.modal-open{overflow:hidden}
  .editor-skip-checkbox{font-size:11px;padding:7px}
  .editor-help{font-size:9px}
 }
+
+/* Estado de conexión de los archivos separados */
+#estadoConexion.estado-ok{color:#0c7549;background:#e9f8f0;border:1px solid #8bd3ad}
+#estadoConexion.estado-error{color:#a31e28;background:#fff0ef;border:1px solid #f4aaaa}
+.error-conexion{margin:14px auto 22px;max-width:1200px;padding:18px 20px;border-radius:12px;color:#842425;background:#fff1ee;border:1px solid #e9a6a6;line-height:1.55}
+.error-conexion p{margin:.5em 0 0}
+.error-conexion code{background:#ffe2dc;border-radius:4px;padding:1px 4px}
+html[data-theme="dark"] #estadoConexion.estado-ok{background:#163927;color:#8de7b3;border-color:#30654a}
+html[data-theme="dark"] #estadoConexion.estado-error{background:#4b2527;color:#ffb3b0;border-color:#9b4345}
+html[data-theme="dark"] .error-conexion{background:#452428;color:#ffe1df;border-color:#8e4548}

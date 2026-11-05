@@ -6,7 +6,7 @@
 <meta name="color-scheme" content="light dark">
 <meta name="description" content="Aplicación local para organizar, unir y foliar PDF de acervos documentarios.">
 <title>Acervo Digital | Organizar, revisar y foliar PDF</title>
-<link rel="stylesheet" href="css/estilos.css">
+<link rel="stylesheet" href="./estilos.css">
 </head>
 <body>
 <div class="app">
@@ -15,7 +15,7 @@
     <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"><path d="M7 3h8l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M15 3v5h4M9 12h7M9 16h7M3 8v11"/></svg></div>
     <div><div class="brand-title">Acervo Digital</div><div class="brand-desc">Gestor de expedientes PDF</div></div>
   </div>
-  <div class="header-actions"><span class="small-pill">Procesamiento en tu navegador</span><button type="button" class="icon-button new-acervo" id="newAcervoTop" title="Vaciar documentos y comenzar un nuevo expediente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Nuevo acervo</span></button><button type="button" class="icon-button" id="themeToggle" aria-label="Activar modo oscuro"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 13.4A9 9 0 0 1 10.6 3.5 9 9 0 1 0 20.5 13.4Z"/></svg><span id="themeLabel">Modo oscuro</span></button></div>
+  <div class="header-actions"><span class="small-pill" id="estadoConexion" role="status" aria-live="polite">Conectando archivos…</span><button type="button" class="icon-button new-acervo" id="newAcervoTop" title="Vaciar documentos y comenzar un nuevo expediente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Nuevo acervo</span></button><button type="button" class="icon-button" id="themeToggle" aria-label="Activar modo oscuro"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 13.4A9 9 0 0 1 10.6 3.5 9 9 0 1 0 20.5 13.4Z"/></svg><span id="themeLabel">Modo oscuro</span></button></div>
 </header>
 <section class="hero"><div class="eyebrow"><span class="dot"></span> HERRAMIENTAS DOCUMENTARIAS</div><h1>Organiza, une y folia tus PDF.</h1><p>Prepara tu acervo en el orden establecido y coloca folios de cuatro dígitos en la esquina superior derecha de cada página. Sin cuentas ni servidores.</p></section>
 <section class="demo-banner" aria-label="Probar la aplicación sin subir documentos">
@@ -101,10 +101,28 @@
  </div>
 </div>
 <div id="toast" class="toast" role="alert" aria-live="assertive"></div>
-<script src="js/datos.js" defer></script>
-<script src="js/procesamiento.js" defer></script>
-<script src="js/acervo.js" defer></script>
-<script src="js/vista-previa.js" defer></script>
-<script src="js/iniciar.js" defer></script>
+<script src="./datos.js" defer></script>
+<script src="./procesamiento.js" defer></script>
+<script src="./acervo.js" defer></script>
+<script src="./vista-previa.js" defer></script>
+<script src="./iniciar.js" defer></script>
+<script>
+// Este diagnóstico funciona incluso cuando falta uno de los archivos JavaScript.
+window.addEventListener('load', function () {
+  const indicador = document.getElementById('estadoConexion');
+  if (window.ACERVO_LISTO === true) {
+    indicador.textContent = '✓ Archivos conectados';
+    indicador.classList.add('estado-ok');
+  } else {
+    indicador.textContent = '⚠ Archivos sin conectar';
+    indicador.classList.add('estado-error');
+    const aviso = document.createElement('div');
+    aviso.className = 'error-conexion';
+    aviso.setAttribute('role','alert');
+    aviso.innerHTML = '<strong>No se cargaron todos los archivos de la aplicación.</strong><p>Descarga el ZIP, descomprímelo y coloca <code>index.html</code>, <code>estilos.css</code> y los cinco archivos <code>.js</code> <strong>en la misma carpeta</strong>. En GitHub, súbelos todos juntos a la raíz del repositorio. No subas solamente el HTML.</p>';
+    document.querySelector('.hero').insertAdjacentElement('afterend', aviso);
+  }
+});
+</script>
 </body>
 </html>

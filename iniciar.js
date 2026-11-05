@@ -50,5 +50,10 @@ function init(){
   if(e.key==='ArrowRight'){e.preventDefault();changeEditorPage(1)}
  });
 }
-init();
-
+try {
+  init();
+  window.ACERVO_LISTO = true;
+} catch (error) {
+  console.error('Error al iniciar Acervo Digital:', error);
+  window.ACERVO_ERROR = String(error && error.message || error);
+}
