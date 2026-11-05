@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Aplicación local para organizar, unir y foliar PDF de acervos documentarios.">
+<title>Acervo Digital | Organizador y foliador PDF</title>
+<style>
+:root{--bg:#f4f7fb;--bg-soft:#ecf1f9;--panel:#ffffff;--panel-alt:#f7f9fd;--line:#dfe7f1;--text:#17243b;--muted:#61718b;--brand:#2456d3;--brand-strong:#1b47b7;--brand-soft:#eaf0ff;--ok:#208664;--ok-soft:#e7f7f0;--danger:#ba4455;--danger-soft:#fff0f2;--shadow:0 8px 30px rgba(20,39,70,.06);--radius:18px;color-scheme:light}
+html[data-theme="dark"]{--bg:#0e1421;--bg-soft:#141d30;--panel:#182235;--panel-alt:#202c40;--line:#314055;--text:#eef4ff;--muted:#a2b2cd;--brand:#8aa8ff;--brand-strong:#abc0ff;--brand-soft:#26375b;--ok:#7ddbb4;--ok-soft:#213e3a;--danger:#ff96a1;--danger-soft:#462f3c;--shadow:0 10px 35px rgba(0,0,0,.16);color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}a{color:inherit}svg{display:block}button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--brand);outline-offset:3px}.app{max-width:1240px;margin:0 auto;padding:0 24px 24px}.topbar{min-height:87px;display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line)}.logo-wrap{display:flex;align-items:center;gap:12px}.logo{width:46px;height:46px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(155deg,#285ddd,#1b3f9b);color:white;box-shadow:0 6px 14px rgba(29,74,178,.22)}.logo svg{width:26px;height:26px}.brand-title{font-weight:850;font-size:18px;letter-spacing:-.55px;line-height:1.2}.brand-desc{font-size:12px;color:var(--muted)}.header-actions{display:flex;gap:10px;align-items:center}.small-pill{font-size:12px;padding:6px 10px;border:1px solid var(--line);color:var(--muted);border-radius:50px;white-space:nowrap}.icon-button{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);color:var(--text);padding:9px 13px;border-radius:11px;font-size:13px;font-weight:700}.icon-button svg{width:17px;height:17px}.hero{padding:43px 0 28px}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--brand);font-weight:900;display:flex;align-items:center;gap:8px}.eyebrow .dot{height:7px;width:7px;background:var(--brand);border-radius:50%}.hero h1{font-size:clamp(27px,3.1vw,39px);line-height:1.13;letter-spacing:-1.25px;margin:11px 0}.hero p{color:var(--muted);max-width:740px;margin:0;font-size:15px}.tabs{display:flex;gap:8px;padding:6px;background:var(--bg-soft);border-radius:14px;width:fit-content;margin:0 0 23px}.tab{border:none;border-radius:10px;background:transparent;color:var(--muted);font-weight:750;padding:11px 18px;display:flex;align-items:center;gap:9px}.tab.active{background:var(--panel);color:var(--brand);box-shadow:0 2px 8px rgba(0,0,0,.05)}.tab svg{width:18px;height:18px}.layout{display:grid;grid-template-columns:minmax(0,1fr) 326px;gap:22px;align-items:start}.main-panel,.side-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}.main-panel{padding:27px}.main-head{display:flex;align-items:start;justify-content:space-between;gap:12px;margin-bottom:23px}.main-head h2{font-size:19px;letter-spacing:-.45px;margin:0 0 5px}.muted{color:var(--muted)}.main-head p{margin:0;color:var(--muted);font-size:13px}.counter{font-size:12px;font-weight:800;color:var(--brand);background:var(--brand-soft);padding:7px 11px;border-radius:8px;white-space:nowrap}.group-label{padding:8px 0 12px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:5px}.group-label strong{font-size:13px;letter-spacing:.1px}.group-label span{font-size:11px;color:var(--muted)}.profile-label{margin-top:25px}.slot{display:grid;grid-template-columns:36px minmax(135px,1fr) auto;gap:12px;align-items:start;padding:11px 0;border-bottom:1px solid var(--line)}.slot:last-child{border-bottom:none}.slot-num{width:32px;height:32px;border:1px solid var(--line);background:var(--panel-alt);display:grid;place-items:center;border-radius:10px;color:var(--muted);font-size:11px;font-weight:800}.slot.is-ready .slot-num{background:var(--ok-soft);color:var(--ok);border-color:transparent}.slot-name{font-weight:760;font-size:13px;line-height:1.35;margin:5px 0 2px}.slot-note{color:var(--muted);font-size:11px}.tag{margin-left:5px;font-size:10px;line-height:1;border-radius:5px;padding:4px 6px;background:var(--panel-alt);color:var(--muted);font-weight:650;white-space:nowrap}.tag.required{background:var(--brand-soft);color:var(--brand)}.upload-btn{border:1px dashed var(--line);background:var(--panel-alt);color:var(--brand);border-radius:9px;padding:8px 11px;font-size:12px;font-weight:780;min-width:103px;display:flex;gap:7px;align-items:center;justify-content:center}.upload-btn svg{width:15px;height:15px}.upload-btn.dragging,.dropzone.dragging{background:var(--brand-soft);border-color:var(--brand)}.files{display:flex;flex-direction:column;gap:6px;margin-top:7px}.file-chip{display:flex;align-items:center;gap:8px;min-width:0;background:var(--panel-alt);border:1px solid var(--line);padding:6px 7px 6px 9px;border-radius:8px;font-size:11px}.file-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}.file-pages{font-size:10px;color:var(--muted);white-space:nowrap}.file-chip.error{background:var(--danger-soft);color:var(--danger)}.file-actions{display:flex;gap:2px}.tiny-action{border:none;background:transparent;color:var(--muted);font-size:13px;width:22px;height:22px;display:grid;place-items:center;border-radius:5px;padding:0}.tiny-action:hover:not(:disabled){background:var(--brand-soft);color:var(--brand)}.side{display:flex;flex-direction:column;gap:15px;position:sticky;top:18px}.side-card{padding:20px}.side-card h3{margin:0 0 5px;font-size:15px;letter-spacing:-.2px}.side-card .sub{margin:0 0 16px;color:var(--muted);font-size:12px}.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--panel-alt);padding:12px;border-radius:11px}.stat-num{font-size:25px;line-height:1.15;font-weight:850;letter-spacing:-.7px}.stat-label{font-size:11px;color:var(--muted);margin-top:3px}.stat-num.ok{color:var(--ok)}.progress-track{height:6px;background:var(--bg-soft);border-radius:10px;overflow:hidden;margin-top:15px}.progress-fill{height:100%;background:var(--brand);width:0%;border-radius:10px;transition:width .2s}.required-status{font-size:11px;color:var(--muted);margin-top:10px}.setting-group{display:flex;flex-direction:column;gap:13px}.toggle-line{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none;font-weight:730;font-size:13px}.toggle-line input{width:18px;height:18px;accent-color:var(--brand);cursor:pointer}.setting-description{font-size:12px;color:var(--muted);margin:5px 0 0 29px}.settings-content{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{font-size:11px;font-weight:700;color:var(--muted);display:block;margin-bottom:6px}.field input,.field select{width:100%;height:41px;padding:0 10px;border-radius:9px;border:1px solid var(--line);background:var(--panel-alt);color:var(--text);font-size:13px}.preview-container{display:grid;place-items:center;background:var(--panel-alt);padding:15px;border-radius:12px;border:1px dashed var(--line)}.folio-paper{width:165px;height:213px;background:white;border:1px solid #e3e7ed;border-radius:3px;box-shadow:0 4px 10px #101c351c;position:relative;padding:23px 17px}.folio-paper::after{content:"";display:block;margin-top:16px;width:92px;height:90px;background:repeating-linear-gradient(to bottom,#e9edf2 0px,#e9edf2 3px,transparent 3px,transparent 14px)}.folio-number{position:absolute;top:10px;right:13px;color:#202a39;font-size:13px;font-family:Arial,Helvetica,sans-serif;font-weight:700;letter-spacing:.2px}.preview-caption{font-size:11px;color:var(--muted);text-align:center;margin-top:10px}.primary-btn{width:100%;border:none;border-radius:11px;background:#2855ce;color:#fff;font-weight:820;padding:13px 14px;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 5px 13px rgba(23,65,172,.16)}.primary-btn:hover:not(:disabled){background:#1d47bd}.primary-btn svg{width:18px;height:18px}.secondary-btn{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text);font-weight:650;font-size:12px}.progress-message{font-size:11px;color:var(--muted);margin:10px 0 0;text-align:center;min-height:17px}.privacy{display:flex;gap:9px;color:var(--muted);font-size:11px;line-height:1.5}.privacy svg{width:17px;height:17px;color:var(--ok);flex-shrink:0;margin-top:1px}.dropzone{border:2px dashed var(--line);border-radius:15px;padding:45px 20px;text-align:center;background:var(--panel-alt);cursor:pointer;transition:all .14s}.dropzone:hover{border-color:var(--brand);background:var(--brand-soft)}.drop-symbol{width:58px;height:58px;margin:0 auto 15px;border-radius:18px;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center}.drop-symbol svg{width:28px;height:28px}.dropzone h3{margin:0 0 3px;font-size:16px}.dropzone p{font-size:12px;color:var(--muted);margin:0 0 15px}.picker-chip{padding:8px 15px;background:var(--panel);border:1px solid var(--line);color:var(--brand);border-radius:9px;display:inline-block;font-size:12px;font-weight:780}.selected-single{display:none;align-items:center;gap:11px;padding:14px;border-radius:11px;border:1px solid var(--line);background:var(--panel-alt);margin-top:16px}.selected-single.show{display:flex}.pdf-glyph{border-radius:8px;background:var(--danger-soft);color:var(--danger);padding:10px;font-size:11px;font-weight:900}.selected-single .names{flex:1;min-width:0}.selected-single .names strong{font-size:13px;display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.selected-single .names span{font-size:11px;color:var(--muted)}.selected-single button{background:none;border:none;color:var(--muted);font-size:19px;padding:2px 5px}.how-card{display:flex;align-items:flex-start;gap:11px;margin-top:25px;padding:15px;background:var(--panel-alt);border-radius:12px}.how-card svg{width:19px;height:19px;flex-shrink:0;color:var(--brand);margin-top:2px}.how-card strong{font-size:13px}.how-card p{font-size:12px;color:var(--muted);margin:2px 0 0}.hidden{display:none!important}.footer{padding:30px 0 10px;margin-top:32px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:12px}.footer strong{color:var(--text)}.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;z-index:100;background:#263650;color:#fff;box-shadow:0 15px 36px #0003;border-radius:11px;padding:12px 18px;max-width:min(90vw,550px);text-align:center;font-size:13px;transition:.2s}.toast.show{transform:translateX(-50%) translateY(0);opacity:1}.toast.error{background:#a63a4f}.toast.success{background:#176e53}@media(max-width:960px){.layout{grid-template-columns:minmax(0,1fr)}.side{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.side-card:last-child{grid-column:1/-1}}@media(max-width:650px){.app{padding:0 14px 20px}.topbar{min-height:75px}.brand-desc,.small-pill{display:none}.hero{padding:32px 0 22px}.hero h1{font-size:29px}.tabs{width:100%;display:grid;grid-template-columns:1fr 1fr}.tab{padding:11px 7px;justify-content:center;font-size:12px;gap:5px}.tab svg{width:16px}.main-panel{padding:17px}.side{display:flex}.slot{grid-template-columns:27px minmax(0,1fr);gap:8px}.slot-num{width:27px;height:27px;font-size:10px}.upload-btn{grid-column:2;width:fit-content;min-width:98px}.main-head{flex-wrap:wrap}.footer{flex-direction:column;gap:4px}.settings-content{grid-template-columns:1fr 1fr}}
+
+/* Sección condicional para adendas y reinicio claro del expediente */
+.new-acervo{background:var(--brand-soft);color:var(--brand);border-color:transparent}
+.new-acervo:hover:not(:disabled){filter:brightness(.97)}
+.adenda-chooser{margin:28px 0 0;padding:18px 19px;background:var(--brand-soft);border:1px solid var(--line);border-radius:14px}
+.adenda-chooser .toggle-line{font-size:15px;color:var(--text)}
+.adenda-chooser .setting-description{line-height:1.55;margin-top:6px}
+.adenda-status{margin:11px 0 0;color:var(--muted);font-size:12px}
+.adenda-section{margin-top:19px}
+.adenda-section .group-label{margin-bottom:7px}
+.tag.conditional{background:var(--ok-soft);color:var(--ok)}
+@media(max-width:650px){.header-actions{gap:6px}.header-actions .new-acervo{padding:9px}.header-actions .new-acervo svg{display:none}.header-actions .new-acervo span{font-size:11px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="logo-wrap">
+    <div class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"><path d="M7 3h8l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M15 3v5h4M9 12h7M9 16h7M3 8v11"/></svg></div>
+    <div><div class="brand-title">Acervo Digital</div><div class="brand-desc">Gestor de expedientes PDF</div></div>
+  </div>
+  <div class="header-actions"><span class="small-pill">Procesamiento en tu navegador</span><button type="button" class="icon-button new-acervo" id="newAcervoTop" title="Vaciar documentos y comenzar un nuevo expediente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg><span>Nuevo acervo</span></button><button type="button" class="icon-button" id="themeToggle" aria-label="Activar modo oscuro"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 13.4A9 9 0 0 1 10.6 3.5 9 9 0 1 0 20.5 13.4Z"/></svg><span id="themeLabel">Modo oscuro</span></button></div>
+</header>
+<section class="hero"><div class="eyebrow"><span class="dot"></span> HERRAMIENTAS DOCUMENTARIAS</div><h1>Organiza, une y folia tus PDF.</h1><p>Prepara tu acervo en el orden establecido y coloca folios de cuatro dígitos en la esquina superior derecha de cada página. Sin cuentas ni servidores.</p></section>
+<div class="tabs" role="tablist" aria-label="Herramientas PDF">
+  <button type="button" class="tab active" role="tab" aria-selected="true" id="tabAcervo" aria-controls="viewAcervo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="12" height="14" rx="2"/><path d="M8 3h9a3 3 0 0 1 3 3v11M8 10h4M8 14h4"/></svg> Crear acervo</button>
+  <button type="button" class="tab" role="tab" aria-selected="false" id="tabFolio" aria-controls="viewFolio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h9l4 4v14H7zM16 3v5h4M10 13h7M10 17h4"/></svg> Foliar PDF existente</button>
+</div>
+<section id="viewAcervo" role="tabpanel" aria-labelledby="tabAcervo">
+ <div class="layout">
+  <main class="main-panel">
+   <div class="main-head"><div><h2>Documentos del acervo</h2><p>Agrega uno o varios PDF por apartado. Se unirán exactamente en este orden.</p></div><span class="counter" id="loadedCounter">0 de 21 apartados</span></div>
+   <div class="group-label"><strong>01—11 · Documentos generales</strong><span>Orden fijo de integración</span></div>
+   <div id="generalSlots"></div>
+   <div class="group-label profile-label"><strong>12 · Sustentos del perfil</strong><span>Documentación complementaria</span></div>
+   <div id="profileSlots"></div>
+   <div class="adenda-chooser">
+    <label class="toggle-line" for="hasAdenda"><input type="checkbox" id="hasAdenda"><span>¿Tiene adenda?</span></label>
+    <p class="setting-description">Marca esta casilla solo si el expediente incluye una adenda. Se habilitará el apartado 13 con sus seis documentos y se agregará después de los sustentos del perfil.</p>
+    <p class="adenda-status" id="adendaStatus">Apartado 13 desactivado.</p>
+   </div>
+   <section class="adenda-section hidden" id="adendaSection" aria-label="Documentos adicionales en caso de adenda">
+    <div class="group-label"><strong>13 · Documentos adicionales en caso de adenda</strong><span>Solo si tiene adenda</span></div>
+    <div id="adendaSlots"></div>
+   </section>
+  </main>
+  <aside class="side">
+   <div class="side-card"><h3>Resumen del expediente</h3><p class="sub">Se actualiza al cargar tus archivos.</p><div class="stat-grid"><div class="stat"><div class="stat-num" id="countDocs">0</div><div class="stat-label">PDF adjuntos</div></div><div class="stat"><div class="stat-num" id="countPages">0</div><div class="stat-label">Páginas detectadas</div></div><div class="stat"><div class="stat-num ok" id="countRequired">0/14</div><div class="stat-label">Obligatorios</div></div><div class="stat"><div class="stat-num" id="countOptional">0/7</div><div class="stat-label">Opcionales</div></div></div><div class="progress-track"><div class="progress-fill" id="completeness"></div></div><p class="required-status" id="requiredStatus">Faltan 14 apartados obligatorios.</p></div>
+   <div class="side-card"><h3>Numeración del acervo</h3><p class="sub">El foliado al unir los PDF es opcional.</p><div class="setting-group"><div><label class="toggle-line"><input type="checkbox" id="folioAcervo"><span>Agregar folios al acervo</span></label><p class="setting-description">Se numerarán todas las páginas del PDF final.</p></div><div class="settings-content" id="acervoNumberSettings"><div class="field"><label for="acervoStart">Folio inicial</label><input type="number" id="acervoStart" min="1" max="9999" step="1" value="1" disabled></div><div class="field"><label for="acervoDirection">Numeración</label><select id="acervoDirection" disabled><option value="forward">Primera → última</option><option value="reverse">Última → primera</option></select></div></div><div class="preview-container"><div class="folio-paper" aria-hidden="true"><span class="folio-number" id="previewAcervo">0001</span></div><div class="preview-caption">Ejemplo de ubicación y tamaño del folio</div></div><button type="button" class="primary-btn" id="generateAcervo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4M5 17v4h14v-4"/></svg><span id="generateAcervoText">Unir y descargar acervo</span></button><button type="button" class="secondary-btn" id="clearAcervo">+ Nuevo acervo (limpiar PDF)</button><div class="progress-track hidden" id="acervoProgressOuter"><div class="progress-fill" id="acervoProgress"></div></div><p class="progress-message" id="acervoMessage" role="status" aria-live="polite"></p></div></div>
+   <div class="side-card"><div class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Los PDF se procesan en tu propio navegador; no se suben a una cuenta o servidor. Los PDF con contraseña no son compatibles. Editar un PDF firmado digitalmente puede invalidar su firma.</span></div></div>
+  </aside>
+ </div>
+</section>
+<section id="viewFolio" role="tabpanel" aria-labelledby="tabFolio" class="hidden">
+ <div class="layout">
+  <main class="main-panel"><div class="main-head"><div><h2>Foliar un PDF existente</h2><p>Sube un PDF completo sin cambiar el orden de sus páginas. Solo se añadirán los números de folio.</p></div><span class="counter">Herramienta 02</span></div>
+   <div class="dropzone" id="singleDropzone" role="button" tabindex="0" aria-label="Seleccionar PDF para foliar"><div class="drop-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v12a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z"/><path d="M14 3v6h5M12 12v6m-3-3 3-3 3 3"/></svg></div><h3>Arrastra y suelta tu PDF aquí</h3><p>o selecciona el archivo desde tu equipo</p><span class="picker-chip">Seleccionar archivo PDF</span></div>
+   <input id="singleFileInput" type="file" accept=".pdf,application/pdf" class="hidden" aria-label="Archivo PDF">
+   <div class="selected-single" id="singleSelected"><div class="pdf-glyph">PDF</div><div class="names"><strong id="singleName">Archivo.pdf</strong><span id="singleMeta">Sin analizar</span></div><button type="button" id="removeSingle" aria-label="Quitar PDF">×</button></div>
+   <div class="how-card"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7h.01"/></svg><div><strong>¿Cómo se aplica el folio?</strong><p>Los números se escriben en la parte superior derecha de cada hoja, con cuatro dígitos (0001, 0002, 0003...). Puedes comenzar desde otro número y foliar en sentido inverso.</p></div></div>
+  </main>
+  <aside class="side">
+   <div class="side-card"><h3>Configuración de foliado</h3><p class="sub">Una numeración por página del PDF.</p><div class="setting-group"><div class="settings-content"><div class="field"><label for="singleStart">Folio inicial</label><input type="number" id="singleStart" min="1" max="9999" value="1" step="1"></div><div class="field"><label for="singleDirection">Numeración</label><select id="singleDirection"><option value="forward">Primera → última</option><option value="reverse">Última → primera</option></select></div></div><div class="preview-container"><div class="folio-paper" aria-hidden="true"><span class="folio-number" id="previewSingle">0001</span></div><div class="preview-caption">Folio de 4 dígitos · esquina superior derecha</div></div><button type="button" class="primary-btn" id="generateSingle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-4-4 4 4 4-4M5 17v4h14v-4"/></svg><span id="generateSingleText">Foliar y descargar PDF</span></button><div class="progress-track hidden" id="singleProgressOuter"><div class="progress-fill" id="singleProgress"></div></div><p class="progress-message" id="singleMessage" role="status" aria-live="polite"></p></div></div>
+   <div class="side-card"><div class="privacy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span>Se conserva la secuencia original de páginas. No se añade una página nueva; solo el número sobre cada página existente. El proceso se realiza localmente.</span></div></div>
+  </aside>
+ </div>
+</section>
+<footer class="footer"><span><strong>Creado por Andi Aguirre</strong></span><span>Acervo Digital · Organizador y foliador PDF</span></footer>
+</div>
+<div id="toast" class="toast" role="alert" aria-live="assertive"></div>
+<script>
+'use strict';
+const GENERAL=[
+{id:'contrato',name:'Contrato',number:'01'},
+{id:'ruc',name:'RUC',number:'02'},
+{id:'multas',name:'Multas',number:'03'},
+{id:'rop',name:'ROP',number:'04'},
+{id:'redam',name:'REDAM',number:'05'},
+{id:'rnssc',name:'RNSSC (sanciones)',number:'06'},
+{id:'sirep',name:'SIREP (nepotismo)',number:'07'},
+{id:'proveedores',name:'Proveedores',number:'08'},
+{id:'pdd',name:'PDD',number:'09'},
+{id:'ccp',name:'Copia de CCP',number:'10'},
+{id:'tdr',name:'Copia de TDR',number:'11'}];
+const PROFILE=[
+{id:'ficha_cv',name:'Hoja de ficha de evaluación curricular (en caso de CLV)',number:'12.1',optional:true,conditional:true},
+{id:'formacion',name:'Formación académica',number:'12.2'},
+{id:'experiencia',name:'Experiencia laboral',number:'12.3',optional:true},
+{id:'capacitacion',name:'Capacitación',number:'12.4',optional:true},
+{id:'reporte_crediticio',name:'Otros: reporte crediticio (de ser requerido en caso CLV)',number:'12.5',optional:true,conditional:true},
+{id:'hoja_entrevista',name:'Hoja de evaluación de entrevista (en caso de CLV)',number:'12.6',optional:true,conditional:true},
+{id:'resolucion_jefatural',name:'Resolución jefatural de designación (en caso de CLV)',number:'12.7',optional:true,conditional:true},
+{id:'cv',name:'Currículum vitae + documentos restantes del CV',number:'12.8'},
+{id:'dni',name:'DNI',number:'12.9'},
+{id:'renuncia',name:'Carta de renuncia o resolución',number:'12.10',optional:true}];
+const ADENDA=[
+{id:'adenda',name:'Adenda',number:'13.1'},
+{id:'adenda_rop',name:'Reporte ROP',number:'13.2'},
+{id:'adenda_infogob',name:'INFOGOB',number:'13.3'},
+{id:'adenda_rnssc',name:'RNSSC',number:'13.4'},
+{id:'adenda_ccp',name:'Copia de nuevo CCP',number:'13.5'},
+{id:'adenda_renuncia',name:'Carta de renuncia o resolución',number:'13.6'}];
+const SLOTS=[...GENERAL,...PROFILE,...ADENDA];
+const bucket=new Map(SLOTS.map(s=>[s.id,[]]));
+let singleFile=null, singlePages=null, isBusy=false, pdfLibPromise=null, uid=0, toastTimer;
+function activeSlots(){return $('hasAdenda').checked?SLOTS:[...GENERAL,...PROFILE]}
+
+const $=id=>document.getElementById(id);
+const kb=n=>n>=1e6?(n/1e6).toFixed(1)+' MB':(n/1024).toFixed(0)+' KB';
+const four=n=>String(n).padStart(4,'0');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const iconUpload='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4m-4 4 4-4 4 4M5 15v5h14v-5"/></svg>';
+function themeInit(){let pref='light';try{pref=localStorage.getItem('acervo-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch{} setTheme(pref)}
+function setTheme(theme){document.documentElement.dataset.theme=theme;$('themeLabel').textContent=theme==='dark'?'Modo claro':'Modo oscuro';$('themeToggle').setAttribute('aria-label',theme==='dark'?'Activar modo claro':'Activar modo oscuro');$('themeIcon').innerHTML=theme==='dark'?'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>':'<path d="M20.5 13.4A9 9 0 0 1 10.6 3.5 9 9 0 1 0 20.5 13.4Z"/>';try{localStorage.setItem('acervo-theme',theme)}catch{}}
+function toast(message,type=''){clearTimeout(toastTimer);$('toast').textContent=message;$('toast').className='toast show '+type;toastTimer=setTimeout(()=>$('toast').className='toast',5000)}
+function switchTab(which){const a=which==='acervo';$('viewAcervo').classList.toggle('hidden',!a);$('viewFolio').classList.toggle('hidden',a);$('tabAcervo').classList.toggle('active',a);$('tabFolio').classList.toggle('active',!a);$('tabAcervo').setAttribute('aria-selected',String(a));$('tabFolio').setAttribute('aria-selected',String(!a))}
+function slotItem(s){const files=bucket.get(s.id);const count=files.length;const fileHTML=files.map((f,i)=>`<div class="file-chip${f.error?' error':''}" title="${esc(f.error||f.name)}"><span aria-hidden="true">📄</span><span class="file-name">${esc(f.name)}</span><span class="file-pages">${f.error?'Error':f.pages==null?'…':f.pages+' pág.'}</span><div class="file-actions"><button type="button" class="tiny-action" data-action="up" data-slot="${s.id}" data-index="${i}" title="Subir archivo" aria-label="Subir ${esc(f.name)}" ${i===0?'disabled':''}>↑</button><button type="button" class="tiny-action" data-action="down" data-slot="${s.id}" data-index="${i}" title="Bajar archivo" aria-label="Bajar ${esc(f.name)}" ${i===files.length-1?'disabled':''}>↓</button><button type="button" class="tiny-action" data-action="remove" data-slot="${s.id}" data-index="${i}" title="Quitar archivo" aria-label="Quitar ${esc(f.name)}">×</button></div></div>`).join('');return `<div class="slot${count?' is-ready':''}" id="slot-${s.id}"><div class="slot-num">${count?'✓':s.number}</div><div class="slot-data"><div class="slot-name">${esc(s.name)}<span class="tag ${s.optional?'':'required'}">${s.optional?'Opcional':'Obligatorio'}</span>${s.conditional?'<span class="tag conditional">Solo si corresponde</span>':''}</div><div class="slot-note">${count?count+' archivo'+(count===1?'':'s')+' adjunto'+(count===1?'':'s'):'Pendiente de cargar'}</div>${count?'<div class="files">'+fileHTML+'</div>':''}</div><button class="upload-btn" data-add="${s.id}" type="button" title="Agregar PDF a ${esc(s.name)}">${iconUpload}${count?'Agregar más':'Subir PDF'}</button></div>`}
+function renderSlots(){
+ $('generalSlots').innerHTML=GENERAL.map(slotItem).join('');
+ $('profileSlots').innerHTML=PROFILE.map(slotItem).join('');
+ $('adendaSlots').innerHTML=ADENDA.map(slotItem).join('');
+ $('adendaSection').classList.toggle('hidden',!$('hasAdenda').checked);
+ $('adendaStatus').textContent=$('hasAdenda').checked?'Apartado 13 habilitado · carga los seis documentos correspondientes.':'Apartado 13 desactivado. Su contenido no se incluirá en el PDF final.';
+ updateStats();
+}
+function updateStats(){
+ const active=activeSlots();let countFilled=0,required=0,optional=0,numPDF=0,totalPages=0,pending=0;
+ let totalRequired=0,totalOptional=0;
+ for(const s of active){
+  const list=bucket.get(s.id);
+  if(s.optional)totalOptional++;else totalRequired++;
+  if(list.length){countFilled++;if(s.optional)optional++;else required++}
+  numPDF+=list.length;
+  for(const f of list){if(typeof f.pages==='number')totalPages+=f.pages;else pending++}
+ }
+ $('loadedCounter').textContent=countFilled+' de '+active.length+' apartados';
+ $('countDocs').textContent=numPDF;
+ $('countPages').textContent=totalPages+(pending?' +':'');
+ $('countRequired').textContent=required+'/'+totalRequired;
+ $('countOptional').textContent=optional+'/'+totalOptional;
+ $('completeness').style.width=(totalRequired?required/totalRequired*100:0)+'%';
+ $('requiredStatus').textContent=required===totalRequired?'Todos los documentos obligatorios están cargados.':'Faltan '+(totalRequired-required)+' apartados obligatorios.';
+}
+function pickSlot(id){if(isBusy)return;const inp=document.createElement('input');inp.type='file';inp.accept='.pdf,application/pdf';inp.multiple=true;inp.addEventListener('change',()=>addFiles(id,Array.from(inp.files||[])));inp.click()}
+async function loadPdfLib(){if(window.PDFLib)return window.PDFLib;if(pdfLibPromise)return pdfLibPromise;pdfLibPromise=new Promise((resolve,reject)=>{const urls=['https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js','https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js'];let i=0;const next=()=>{if(window.PDFLib){resolve(window.PDFLib);return}if(i>=urls.length){reject(new Error('No fue posible cargar el motor PDF. Conéctate a internet y vuelve a intentarlo.'));return}const el=document.createElement('script');el.src=urls[i++];el.async=true;el.onload=()=>{window.PDFLib?resolve(window.PDFLib):next()};el.onerror=()=>{el.remove();next()};document.head.appendChild(el)};next()});try{return await pdfLibPromise}catch(e){pdfLibPromise=null;throw e}}
+function validPdf(f){return !!f && (/\.pdf$/i.test(f.name)||f.type==='application/pdf')}
+async function readCount(item){try{const lib=await loadPdfLib();const doc=await lib.PDFDocument.load(await item.file.arrayBuffer(),{updateMetadata:false});item.pages=doc.getPageCount();item.error=item.pages===0?'El PDF no contiene páginas':''}catch(e){item.error=/encrypt|password/i.test(e.message||'')?'PDF protegido con contraseña':('No se pudo leer este PDF: '+(e.message||'archivo no válido'));item.pages=null}renderSlots()}
+function addFiles(id,files){if(isBusy)return;if(ADENDA.some(s=>s.id===id)&&!$('hasAdenda').checked)return;const valid=files.filter(validPdf);if(valid.length!==files.length)toast('Solo se admiten archivos PDF. Se ignoraron otros formatos.','error');if(!valid.length)return;const target=bucket.get(id);for(const f of valid){const item={id:++uid,file:f,name:f.name,size:f.size,pages:null,error:''};target.push(item);readCount(item)}renderSlots();toast(valid.length+(valid.length===1?' PDF agregado.':' PDF agregados.'),'success')}
+function reorder(id,index,action){if(isBusy)return;const list=bucket.get(id);if(!list)return;if(action==='remove')list.splice(index,1);else{const ni=index+(action==='up'?-1:1);if(ni<0||ni>=list.length)return;[list[index],list[ni]]=[list[ni],list[index]]}renderSlots()}
+function attachSlotActions(){document.addEventListener('click',e=>{const add=e.target.closest('[data-add]');if(add){pickSlot(add.dataset.add);return}const btn=e.target.closest('[data-action][data-slot]');if(btn)reorder(btn.dataset.slot,Number(btn.dataset.index),btn.dataset.action)});for(const host of [$('generalSlots'),$('profileSlots'),$('adendaSlots')]){host.addEventListener('dragover',e=>{const btn=e.target.closest('[data-add]');if(btn){e.preventDefault();btn.classList.add('dragging')}});host.addEventListener('dragleave',e=>{const btn=e.target.closest('[data-add]');if(btn)btn.classList.remove('dragging')});host.addEventListener('drop',e=>{const btn=e.target.closest('[data-add]');if(btn){e.preventDefault();btn.classList.remove('dragging');addFiles(btn.dataset.add,Array.from(e.dataTransfer.files||[]))}})}}
+function numericStart(input){const v=Number(input.value);if(!Number.isInteger(v)||v<1||v>9999)throw new Error('Ingresa un folio inicial válido entre 1 y 9999.');return v}
+function updatePreview(input,preview){const n=Number(input.value);$(preview).textContent=Number.isInteger(n)&&n>=1&&n<=9999?four(n):'0001'}
+function numberCheck(start,total){if(total<1)throw new Error('El PDF no contiene páginas.');if(start+total-1>9999)throw new Error(`El archivo tiene ${total} páginas. Los folios de 4 dígitos solo permiten llegar hasta 9999. Reduce el número inicial o la cantidad de páginas.`)}
+function setBusy(value,mode){isBusy=value;const btn=$(mode==='acervo'?'generateAcervo':'generateSingle');btn.disabled=value;$(mode==='acervo'?'generateAcervoText':'generateSingleText').textContent=value?'Procesando PDF...':(mode==='acervo'?'Unir y descargar acervo':'Foliar y descargar PDF');$(mode+'ProgressOuter').classList.toggle('hidden',!value);if(value)$(mode+'Progress').style.width='1%'}
+function progress(mode,pct,message){$(mode+'Progress').style.width=Math.max(1,Math.min(100,pct))+'%';$(mode+'Message').textContent=message}
+function folioOnPage(page,font,num,lib){const {width:w,height:h}=page.getSize();const txt=four(num);const fontSize=12;const space=22;const textWidth=font.widthOfTextAtSize(txt,fontSize);const a=((page.getRotation().angle%360)+360)%360;let x,y,rotation=a;
+if(a===0){x=w-space-textWidth;y=h-space-fontSize}
+else if(a===90){x=space+fontSize;y=h-space-textWidth}
+else if(a===180){x=space+textWidth;y=space+fontSize}
+else if(a===270){x=w-space-fontSize;y=space+textWidth}
+else{rotation=0;x=w-space-textWidth;y=h-space-fontSize}
+page.drawText(txt,{x,y,font,size:fontSize,color:lib.rgb(0.12,0.16,0.22),rotate:lib.degrees(rotation),opacity:1})}
+function applyFolios(pages,font,start,direction,lib){numberCheck(start,pages.length);for(let i=0;i<pages.length;i++){const num=start+(direction==='reverse'?pages.length-1-i:i);folioOnPage(pages[i],font,num,lib)}}
+function downloadPDF(bytes,filename){const blob=new Blob([bytes],{type:'application/pdf'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),30000)}
+async function generateAcervo(){if(isBusy)return;const missing=activeSlots().filter(s=>!s.optional&&bucket.get(s.id).length===0);if(missing.length){toast('Faltan apartados obligatorios: '+missing.slice(0,3).map(s=>s.name).join(', ')+(missing.length>3?' y '+(missing.length-3)+' más.':''),'error');const first=$('slot-'+missing[0].id);if(first)first.scrollIntoView({behavior:'smooth',block:'center'});return}const ordered=activeSlots().flatMap(s=>bucket.get(s.id));if(ordered.some(f=>f.error)){toast('Quita o reemplaza los PDF marcados con error.','error');return}let start=1;const foliate=$('folioAcervo').checked;try{if(foliate)start=numericStart($('acervoStart'))}catch(e){toast(e.message,'error');return}
+setBusy(true,'acervo');try{const lib=await loadPdfLib();const output=await lib.PDFDocument.create();let total=0;for(let i=0;i<ordered.length;i++){const entry=ordered[i];progress('acervo',Math.round(i/ordered.length*78),`Integrando ${i+1} de ${ordered.length}: ${entry.name}`);const original=await lib.PDFDocument.load(await entry.file.arrayBuffer(),{updateMetadata:false});const newPages=await output.copyPages(original,original.getPageIndices());for(const p of newPages){output.addPage(p);total++}await new Promise(r=>setTimeout(r,0))}if(foliate){numberCheck(start,total);progress('acervo',82,'Añadiendo los folios...');const font=await output.embedFont(lib.StandardFonts.HelveticaBold);applyFolios(output.getPages(),font,start,$('acervoDirection').value,lib)}progress('acervo',92,'Guardando el expediente final...');output.setTitle('Acervo Digital');output.setCreator('Acervo Digital · Andi Aguirre');const bytes=await output.save();const stamp=new Date().toISOString().slice(0,10);downloadPDF(bytes,'ACERVO_'+stamp+'.pdf');progress('acervo',100,`¡Acervo generado! ${total} páginas, ${ordered.length} PDF integrados.`);toast('Acervo generado y descargado correctamente.','success')}catch(e){const desc=/encrypt|password/i.test(e.message||'')?'Uno de los PDF tiene contraseña o está cifrado.':(e.message||'Ocurrió un error al procesar tus archivos.');progress('acervo',0,'Error: '+desc);toast(desc,'error');console.error(e)}finally{setBusy(false,'acervo')}}
+function selectSingle(file){if(isBusy||!file)return;if(!validPdf(file)){toast('Selecciona un archivo PDF válido.','error');return}singleFile=file;singlePages=null;$('singleName').textContent=file.name;$('singleMeta').textContent=kb(file.size)+' · Analizando páginas...';$('singleSelected').classList.add('show');(async()=>{try{const lib=await loadPdfLib();const doc=await lib.PDFDocument.load(await file.arrayBuffer(),{updateMetadata:false});if(singleFile===file){singlePages=doc.getPageCount();$('singleMeta').textContent=kb(file.size)+' · '+singlePages+' página'+(singlePages===1?'':'s')}}catch(e){if(singleFile===file){singlePages=null;$('singleMeta').textContent=kb(file.size)+' · No se pudo leer (PDF cifrado o inválido)';toast('No se pudo analizar este PDF.','error')}}})()}
+async function generateSingle(){if(isBusy)return;if(!singleFile){toast('Primero selecciona el PDF que deseas foliar.','error');return}let start;try{start=numericStart($('singleStart'))}catch(e){toast(e.message,'error');return}setBusy(true,'single');try{const lib=await loadPdfLib();progress('single',15,'Abriendo PDF...');const output=await lib.PDFDocument.load(await singleFile.arrayBuffer(),{updateMetadata:false});const pages=output.getPages();numberCheck(start,pages.length);progress('single',48,`Agregando folios a ${pages.length} páginas...`);const font=await output.embedFont(lib.StandardFonts.HelveticaBold);applyFolios(pages,font,start,$('singleDirection').value,lib);progress('single',84,'Preparando descarga...');const bytes=await output.save();const base=singleFile.name.replace(/\.pdf$/i,'').replace(/[\\/:*?"<>|]/g,'_');downloadPDF(bytes,base+'_FOLIADO.pdf');progress('single',100,`¡PDF foliado! ${pages.length} páginas numeradas.`);toast('PDF foliado y descargado correctamente.','success')}catch(e){const desc=/encrypt|password/i.test(e.message||'')?'El PDF tiene contraseña o está cifrado.':(e.message||'No se pudo procesar el PDF.');progress('single',0,'Error: '+desc);toast(desc,'error');console.error(e)}finally{setBusy(false,'single')}}
+function newAcervo(){
+ if(isBusy){toast('Espera a que finalice el procesamiento actual.','error');return}
+ for(const arr of bucket.values())arr.length=0;
+ singleFile=null;singlePages=null;
+ $('singleSelected').classList.remove('show');
+ $('singleFileInput').value='';
+ $('singleStart').value='1';$('singleDirection').value='forward';
+ updatePreview($('singleStart'),'previewSingle');
+ $('singleMessage').textContent='';
+ $('singleProgressOuter').classList.add('hidden');
+ $('singleProgress').style.width='0%';
+ $('hasAdenda').checked=false;
+ $('folioAcervo').checked=false;
+ $('acervoStart').value='1';$('acervoStart').disabled=true;
+ $('acervoDirection').value='forward';$('acervoDirection').disabled=true;
+ updatePreview($('acervoStart'),'previewAcervo');
+ $('acervoProgressOuter').classList.add('hidden');
+ $('acervoProgress').style.width='0%';
+ $('acervoMessage').textContent='Nuevo acervo listo para comenzar.';
+ renderSlots();switchTab('acervo');
+ toast('Nuevo acervo creado. Se limpiaron todos los PDF y se reinició la configuración.','success');
+}
+function init(){
+ themeInit();renderSlots();attachSlotActions();
+ $('themeToggle').addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+ $('tabAcervo').addEventListener('click',()=>switchTab('acervo'));
+ $('tabFolio').addEventListener('click',()=>switchTab('folio'));
+ $('hasAdenda').addEventListener('change',()=>{renderSlots();toast($('hasAdenda').checked?'Apartado 13 habilitado.':'Apartado 13 desactivado; no se incluirá al generar el acervo.','success')});
+ $('folioAcervo').addEventListener('change',e=>{for(const id of ['acervoStart','acervoDirection'])$(id).disabled=!e.target.checked});
+ for(const [input,preview] of [['acervoStart','previewAcervo'],['singleStart','previewSingle']])$(input).addEventListener('input',()=>updatePreview($(input),preview));
+ $('generateAcervo').addEventListener('click',generateAcervo);
+ $('generateSingle').addEventListener('click',generateSingle);
+ $('clearAcervo').addEventListener('click',newAcervo);
+ $('newAcervoTop').addEventListener('click',newAcervo);
+ const dz=$('singleDropzone');const inp=$('singleFileInput');
+ dz.addEventListener('click',()=>{if(!isBusy)inp.click()});
+ dz.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&!isBusy){e.preventDefault();inp.click()}});
+ inp.addEventListener('change',()=>{selectSingle(inp.files&&inp.files[0]);inp.value='' });
+ dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('dragging')});
+ dz.addEventListener('dragleave',()=>dz.classList.remove('dragging'));
+ dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('dragging');const f=Array.from(e.dataTransfer.files||[]);if(f.length>1)toast('Se usará el primer PDF. Este apartado admite un solo archivo.');selectSingle(f[0])});
+ $('removeSingle').addEventListener('click',()=>{if(isBusy)return;singleFile=null;singlePages=null;$('singleSelected').classList.remove('show');$('singleMessage').textContent=''});
+}
+init();
+</script>
+</body>
+</html>
