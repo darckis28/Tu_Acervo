@@ -2,7 +2,13 @@ function activeProfileSlots(){
  return $('profileCombined').checked?[PROFILE_PDF]:PROFILE;
 }
 function activeSlots(){
- return [...GENERAL,...activeProfileSlots(),...($('hasAdenda').checked?ADENDA:[])];
+ return [
+  ...GENERAL_HASTA_PDD,
+  ...($('hasPddObservation').checked?ANTECEDENTES_PDD:[]),
+  ...GENERAL_DESPUES_PDD,
+  ...activeProfileSlots(),
+  ...($('hasAdenda').checked?ADENDA:[])
+ ];
 }
 function makeEntry(file){return {id:++uid,file,name:file.name,size:file.size,pages:null,error:'',deleted:new Set(),skipped:new Set(),forced:new Set()}}
 function remainingPages(item){return item.pages===null?0:Math.max(0,item.pages-item.deleted.size)}
@@ -44,7 +50,10 @@ function slotItem(s){
  return `<div class="slot${ready?' is-ready':''}" id="slot-${s.id}"><div class="slot-num">${ready?'✓':s.number}</div><div class="slot-data"><div class="slot-name">${esc(s.name)}<span class="tag ${s.optional?'':'required'}">${s.optional?'Opcional':'Obligatorio'}</span>${s.conditional?'<span class="tag conditional">Solo si corresponde</span>':''}</div><div class="slot-note">${count?count+' archivo'+(count===1?'':'s')+' adjunto'+(count===1?'':'s'):'Pendiente de cargar'}</div>${count?'<div class="files">'+fileHTML+'</div>':''}</div><button class="upload-btn" data-add="${s.id}" type="button" title="Agregar PDF a ${esc(s.name)}">${iconUpload}${count?(s.single?'Reemplazar PDF':'Agregar más'):'Subir PDF'}</button></div>`;
 }
 function renderSlots(){
- $('generalSlots').innerHTML=GENERAL.map(slotItem).join('');
+ $('generalThroughPdd').innerHTML=GENERAL_HASTA_PDD.map(slotItem).join('');
+ $('pddAttachments').hidden=!$('hasPddObservation').checked;
+ $('pddAttachmentSlots').innerHTML=ANTECEDENTES_PDD.map(slotItem).join('');
+ $('generalAfterPdd').innerHTML=GENERAL_DESPUES_PDD.map(slotItem).join('');
  $('profileSlots').innerHTML=activeProfileSlots().map(slotItem).join('');
  $('profileCombinedHelp').hidden=!$('profileCombined').checked;
  $('adendaSlots').innerHTML=ADENDA.map(slotItem).join('');
@@ -103,6 +112,7 @@ function newAcervo(){
   $(mode+'Color').value='#202a39';$(mode+'ProgressOuter').classList.add('hidden');$(mode+'Progress').style.width='0%';$(mode+'Message').textContent='';
  }
  $('hasAdenda').checked=false;$('folioAcervo').checked=false;$('profileSeparate').checked=true;
+ $('hasPddObservation').checked=false;
  $('acervoStart').disabled=true;$('acervoDirection').disabled=true;$('acervoNoBack').disabled=true;$('acervoColor').disabled=true;
  renderSlots();updateSample('acervo');updateSample('single');switchTab('acervo');
  $('demoNote').classList.remove('show');

@@ -32,7 +32,17 @@
   <main class="main-panel">
    <div class="main-head"><div><h2>Documentos del acervo</h2><p>Agrega uno o varios PDF por apartado. Revisa las páginas y elimina hojas innecesarias antes de unirlos en este orden.</p></div><span class="counter" id="loadedCounter">0 de 21 grupos de carga</span></div>
    <div class="group-label"><strong>01—11 · Documentos generales</strong><span>Orden fijo de integración</span></div>
-   <div id="generalSlots"></div>
+   <div id="generalSlots">
+    <div id="generalThroughPdd"></div>
+    <div class="pdd-observation">
+     <label class="toggle-line"><input type="checkbox" id="hasPddObservation" aria-controls="pddAttachments"><span>PDD con observación</span></label>
+     <div id="pddAttachments" hidden>
+      <p class="profile-mode-help">Adjunta los antecedentes que correspondan. Puedes cargar uno o ambos.</p>
+      <div id="pddAttachmentSlots"></div>
+     </div>
+    </div>
+    <div id="generalAfterPdd"></div>
+   </div>
    <div class="group-label profile-label"><strong>12 · Sustentos del perfil</strong><span>Documentación complementaria</span></div>
    <fieldset class="profile-upload-mode" id="profileUploadMode">
     <legend>¿Cómo quieres cargar los sustentos?</legend>

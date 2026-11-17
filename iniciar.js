@@ -5,6 +5,10 @@ function init(){
  $('themeToggle').addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
  $('tabAcervo').addEventListener('click',()=>switchTab('acervo'));
  $('tabFolio').addEventListener('click',()=>switchTab('folio'));
+ $('hasPddObservation').addEventListener('change',()=>{
+  $('acervoMessage').textContent='';
+  renderSlots();
+ });
  $('profileUploadMode').addEventListener('change',()=>{
   $('acervoMessage').textContent='';
   renderSlots();

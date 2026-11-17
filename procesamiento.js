@@ -114,6 +114,7 @@ function updateSample(mode){
 function setBusy(value,mode){
  isBusy=value;const btn=$(mode==='acervo'?'generateAcervo':'generateSingle');btn.disabled=value;
  $('profileUploadMode').disabled=value;
+ $('hasPddObservation').disabled=value;
  $(mode==='acervo'?'generateAcervoText':'generateSingleText').textContent=value?'Procesando PDF…':(mode==='acervo'?'Unir y descargar acervo':'Foliar y descargar PDF');
  $(mode+'ProgressOuter').classList.toggle('hidden',!value);
  $('openAcervoEditor').disabled=value||!getModeEntries('acervo').some(e=>e.pages>0&&!e.error);

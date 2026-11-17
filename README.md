@@ -33,6 +33,10 @@ ACERVO_DIGITAL_GITHUB_CONECTADO/
 4. En **Settings → Pages**, selecciona **Deploy from a branch**, rama **main** y carpeta **/(root)**.
 5. Abre el enlace que indique GitHub Pages. Si actualizaste el proyecto, recarga con **Ctrl + F5**.
 
+## 09 · PDD con observación
+
+Marca **PDD con observación** para habilitar la carga de **Antecedentes penales** y **Antecedentes judiciales**. Puedes adjuntar uno o ambos, según corresponda. Los archivos se incluyen después del PDD y antes de la copia de CCP mientras la casilla esté marcada.
+
 ## 12 · Sustentos del perfil
 
 - **Por separado** muestra cada tipo de sustento para cargar sus archivos.

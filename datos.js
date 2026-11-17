@@ -1,7 +1,7 @@
 
 'use strict';
 
-const GENERAL=[
+const GENERAL_HASTA_PDD=[
  {id:'contrato',name:'Contrato',number:'01'},
  {id:'ruc',name:'RUC',number:'02'},
  {id:'multas',name:'Multas',number:'03'},
@@ -10,7 +10,13 @@ const GENERAL=[
  {id:'rnssc',name:'RNSSC (sanciones)',number:'06'},
  {id:'sirep',name:'SIREP (nepotismo)',number:'07'},
  {id:'proveedores',name:'Proveedores',number:'08'},
- {id:'pdd',name:'PDD',number:'09'},
+ {id:'pdd',name:'PDD',number:'09'}
+];
+const ANTECEDENTES_PDD=[
+ {id:'pdd_penales',name:'Antecedentes penales',number:'09.1',optional:true},
+ {id:'pdd_judiciales',name:'Antecedentes judiciales',number:'09.2',optional:true}
+];
+const GENERAL_DESPUES_PDD=[
  {id:'ccp',name:'Copia de CCP',number:'10'},
  {id:'tdr',name:'Copia de TDR',number:'11'}
 ];
@@ -35,7 +41,9 @@ const ADENDA=[
  {id:'adenda_renuncia',name:'Carta de renuncia o resolución',number:'13.6'}
 ];
 const PROFILE_PDF={id:'perfil_completo',name:'Sustentos del perfil completos',number:'12',single:true};
-const bucket=new Map([...GENERAL,...PROFILE,PROFILE_PDF,...ADENDA].map(s=>[s.id,[]]));
+const bucket=new Map([
+ ...GENERAL_HASTA_PDD,...ANTECEDENTES_PDD,...GENERAL_DESPUES_PDD,...PROFILE,PROFILE_PDF,...ADENDA
+].map(s=>[s.id,[]]));
 const $=id=>document.getElementById(id);
 const kb=n=>n>=1e6?(n/1e6).toFixed(1)+' MB':(n/1024).toFixed(0)+' KB';
 const four=n=>String(n).padStart(4,'0');
