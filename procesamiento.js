@@ -33,10 +33,15 @@ async function readCount(item){
  renderSlots();
 }
 function addFiles(id,files){
- if(isBusy||ADENDA.some(s=>s.id===id)&&!$('hasAdenda').checked)return;
+ if(isBusy||!activeSlots().some(slot=>slot.id===id))return;
+ if(id===PROFILE_PDF.id&&files.length>1){
+  toast('Selecciona un solo PDF para los sustentos del perfil.','error');
+  return;
+ }
  const valid=files.filter(validPdf);
- if(valid.length!==files.length)toast('Solo se admiten archivos PDF; se ignoraron otros formatos.','error');
+ if(valid.length!==files.length)toast('Solo se admiten archivos PDF.','error');
  if(!valid.length)return;const target=bucket.get(id);
+ if(id===PROFILE_PDF.id&&target.length)releasePreviewCache(target.pop());
  for(const f of valid){const entry=makeEntry(f);target.push(entry);readCount(entry)}
  renderSlots();toast(valid.length+(valid.length===1?' PDF agregado.':' PDF agregados.'),'success');
 }
@@ -108,6 +113,7 @@ function updateSample(mode){
 }
 function setBusy(value,mode){
  isBusy=value;const btn=$(mode==='acervo'?'generateAcervo':'generateSingle');btn.disabled=value;
+ $('profileUploadMode').disabled=value;
  $(mode==='acervo'?'generateAcervoText':'generateSingleText').textContent=value?'Procesando PDF…':(mode==='acervo'?'Unir y descargar acervo':'Foliar y descargar PDF');
  $(mode+'ProgressOuter').classList.toggle('hidden',!value);
  $('openAcervoEditor').disabled=value||!getModeEntries('acervo').some(e=>e.pages>0&&!e.error);

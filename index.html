@@ -30,10 +30,16 @@
 <section id="viewAcervo" role="tabpanel" aria-labelledby="tabAcervo">
  <div class="layout">
   <main class="main-panel">
-   <div class="main-head"><div><h2>Documentos del acervo</h2><p>Agrega uno o varios PDF por apartado. Revisa las páginas y elimina hojas innecesarias antes de unirlos en este orden.</p></div><span class="counter" id="loadedCounter">0 de 21 apartados</span></div>
+   <div class="main-head"><div><h2>Documentos del acervo</h2><p>Agrega uno o varios PDF por apartado. Revisa las páginas y elimina hojas innecesarias antes de unirlos en este orden.</p></div><span class="counter" id="loadedCounter">0 de 21 grupos de carga</span></div>
    <div class="group-label"><strong>01—11 · Documentos generales</strong><span>Orden fijo de integración</span></div>
    <div id="generalSlots"></div>
    <div class="group-label profile-label"><strong>12 · Sustentos del perfil</strong><span>Documentación complementaria</span></div>
+   <fieldset class="profile-upload-mode" id="profileUploadMode">
+    <legend>¿Cómo quieres cargar los sustentos?</legend>
+    <label class="toggle-line"><input type="radio" id="profileSeparate" name="profileMode" value="separado" checked> Por separado</label>
+    <label class="toggle-line"><input type="radio" id="profileCombined" name="profileMode" value="unico" aria-describedby="profileCombinedHelp"> En un solo PDF</label>
+   </fieldset>
+   <p class="profile-mode-help" id="profileCombinedHelp" hidden>Sube el PDF con todos los sustentos en el orden que deben aparecer.</p>
    <div id="profileSlots"></div>
    <div class="adenda-chooser">
     <label class="toggle-line" for="hasAdenda"><input type="checkbox" id="hasAdenda"><span>¿Tiene adenda?</span></label>

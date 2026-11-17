@@ -1,4 +1,9 @@
-function activeSlots(){return $('hasAdenda').checked?SLOTS:[...GENERAL,...PROFILE]}
+function activeProfileSlots(){
+ return $('profileCombined').checked?[PROFILE_PDF]:PROFILE;
+}
+function activeSlots(){
+ return [...GENERAL,...activeProfileSlots(),...($('hasAdenda').checked?ADENDA:[])];
+}
 function makeEntry(file){return {id:++uid,file,name:file.name,size:file.size,pages:null,error:'',deleted:new Set(),skipped:new Set(),forced:new Set()}}
 function remainingPages(item){return item.pages===null?0:Math.max(0,item.pages-item.deleted.size)}
 function getModeOptions(mode){
@@ -33,15 +38,15 @@ function slotItem(s){
  const files=bucket.get(s.id),count=files.length;
  const ready=files.some(f=>f.pages===null&&!f.error||remainingPages(f)>0);
  const fileHTML=files.map((f,i)=>{
-  const removed=f.deleted.size;
   const countText=f.error?'Error':f.pages===null?'Analizando…':remainingPages(f)+'/'+f.pages+' pág.';
   return `<div class="file-chip${f.error?' error':''}" title="${esc(f.error||f.name)}"><span aria-hidden="true">📄</span><span class="file-name">${esc(f.name)}</span><span class="file-pages">${countText}</span><div class="file-actions"><button type="button" class="tiny-action preview-file" data-action="edit" data-slot="${s.id}" data-index="${i}" title="Previsualizar y editar páginas" aria-label="Revisar páginas de ${esc(f.name)}" ${f.pages===null||f.error?'disabled':''}>◉</button><button type="button" class="tiny-action" data-action="up" data-slot="${s.id}" data-index="${i}" title="Subir archivo" ${i===0?'disabled':''}>↑</button><button type="button" class="tiny-action" data-action="down" data-slot="${s.id}" data-index="${i}" title="Bajar archivo" ${i===files.length-1?'disabled':''}>↓</button><button type="button" class="tiny-action" data-action="remove" data-slot="${s.id}" data-index="${i}" title="Quitar archivo">×</button></div></div>`;
  }).join('');
- return `<div class="slot${ready?' is-ready':''}" id="slot-${s.id}"><div class="slot-num">${ready?'✓':s.number}</div><div class="slot-data"><div class="slot-name">${esc(s.name)}<span class="tag ${s.optional?'':'required'}">${s.optional?'Opcional':'Obligatorio'}</span>${s.conditional?'<span class="tag conditional">Solo si corresponde</span>':''}</div><div class="slot-note">${count?count+' archivo'+(count===1?'':'s')+' adjunto'+(count===1?'':'s'):'Pendiente de cargar'}</div>${count?'<div class="files">'+fileHTML+'</div>':''}</div><button class="upload-btn" data-add="${s.id}" type="button" title="Agregar PDF a ${esc(s.name)}">${iconUpload}${count?'Agregar más':'Subir PDF'}</button></div>`;
+ return `<div class="slot${ready?' is-ready':''}" id="slot-${s.id}"><div class="slot-num">${ready?'✓':s.number}</div><div class="slot-data"><div class="slot-name">${esc(s.name)}<span class="tag ${s.optional?'':'required'}">${s.optional?'Opcional':'Obligatorio'}</span>${s.conditional?'<span class="tag conditional">Solo si corresponde</span>':''}</div><div class="slot-note">${count?count+' archivo'+(count===1?'':'s')+' adjunto'+(count===1?'':'s'):'Pendiente de cargar'}</div>${count?'<div class="files">'+fileHTML+'</div>':''}</div><button class="upload-btn" data-add="${s.id}" type="button" title="Agregar PDF a ${esc(s.name)}">${iconUpload}${count?(s.single?'Reemplazar PDF':'Agregar más'):'Subir PDF'}</button></div>`;
 }
 function renderSlots(){
  $('generalSlots').innerHTML=GENERAL.map(slotItem).join('');
- $('profileSlots').innerHTML=PROFILE.map(slotItem).join('');
+ $('profileSlots').innerHTML=activeProfileSlots().map(slotItem).join('');
+ $('profileCombinedHelp').hidden=!$('profileCombined').checked;
  $('adendaSlots').innerHTML=ADENDA.map(slotItem).join('');
  $('adendaSection').classList.toggle('hidden',!$('hasAdenda').checked);
  $('adendaStatus').textContent=$('hasAdenda').checked?'Apartado 13 habilitado · carga los seis documentos correspondientes.':'Apartado 13 desactivado. Su contenido no se incluirá en el PDF final.';
@@ -56,7 +61,7 @@ function updateStats(){
   numPDF+=entries.length;
   for(const e of entries){if(typeof e.pages==='number')total+=remainingPages(e);else pending++}
  }
- $('loadedCounter').textContent=filled+' de '+active.length+' apartados';
+ $('loadedCounter').textContent=filled+' de '+active.length+' grupos de carga';
  $('countDocs').textContent=numPDF;$('countPages').textContent=total+(pending?' +':'');
  $('countRequired').textContent=required+'/'+totalRequired;$('countOptional').textContent=optional+'/'+totalOptional;
  $('completeness').style.width=(totalRequired?required/totalRequired*100:0)+'%';
@@ -64,7 +69,7 @@ function updateStats(){
  $('openAcervoEditor').disabled=!getModeEntries('acervo').some(e=>e.pages>0&&!e.error)||isBusy;
 }
 function pickSlot(id){
- if(isBusy)return;const inp=document.createElement('input');inp.type='file';inp.accept='.pdf,application/pdf';inp.multiple=true;
+ if(isBusy)return;const inp=document.createElement('input');inp.type='file';inp.accept='.pdf,application/pdf';inp.multiple=id!==PROFILE_PDF.id;
  inp.addEventListener('change',()=>addFiles(id,Array.from(inp.files||[])));inp.click();
 }
 
@@ -97,7 +102,7 @@ function newAcervo(){
   $(mode+'Start').value='1';$(mode+'Direction').value='forward';$(mode+'NoBack').checked=false;
   $(mode+'Color').value='#202a39';$(mode+'ProgressOuter').classList.add('hidden');$(mode+'Progress').style.width='0%';$(mode+'Message').textContent='';
  }
- $('hasAdenda').checked=false;$('folioAcervo').checked=false;
+ $('hasAdenda').checked=false;$('folioAcervo').checked=false;$('profileSeparate').checked=true;
  $('acervoStart').disabled=true;$('acervoDirection').disabled=true;$('acervoNoBack').disabled=true;$('acervoColor').disabled=true;
  renderSlots();updateSample('acervo');updateSample('single');switchTab('acervo');
  $('demoNote').classList.remove('show');

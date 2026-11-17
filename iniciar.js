@@ -5,6 +5,10 @@ function init(){
  $('themeToggle').addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
  $('tabAcervo').addEventListener('click',()=>switchTab('acervo'));
  $('tabFolio').addEventListener('click',()=>switchTab('folio'));
+ $('profileUploadMode').addEventListener('change',()=>{
+  $('acervoMessage').textContent='';
+  renderSlots();
+ });
  $('hasAdenda').addEventListener('change',()=>{renderSlots();updateSample('acervo');toast($('hasAdenda').checked?'Apartado 13 habilitado.':'Apartado 13 desactivado; no se incluirá en el PDF final.','success')});
  $('folioAcervo').addEventListener('change',event=>{
   for(const id of ['acervoStart','acervoDirection','acervoNoBack','acervoColor'])$(id).disabled=!event.target.checked;

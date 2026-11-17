@@ -34,8 +34,8 @@ const ADENDA=[
  {id:'adenda_ccp',name:'Copia de nuevo CCP',number:'13.5'},
  {id:'adenda_renuncia',name:'Carta de renuncia o resolución',number:'13.6'}
 ];
-const SLOTS=[...GENERAL,...PROFILE,...ADENDA];
-const bucket=new Map(SLOTS.map(s=>[s.id,[]]));
+const PROFILE_PDF={id:'perfil_completo',name:'Sustentos del perfil completos',number:'12',single:true};
+const bucket=new Map([...GENERAL,...PROFILE,PROFILE_PDF,...ADENDA].map(s=>[s.id,[]]));
 const $=id=>document.getElementById(id);
 const kb=n=>n>=1e6?(n/1e6).toFixed(1)+' MB':(n/1024).toFixed(0)+' KB';
 const four=n=>String(n).padStart(4,'0');
