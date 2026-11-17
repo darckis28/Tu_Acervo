@@ -8,6 +8,7 @@ const GENERAL_HASTA_PDD=[
  {id:'rop',name:'ROP',number:'04'},
  {id:'redam',name:'REDAM',number:'05'},
  {id:'rnssc',name:'RNSSC (sanciones)',number:'06'},
+ {id:'infogob',name:'Filtro de INFOGOB',number:'06.1'},
  {id:'sirep',name:'SIREP (nepotismo)',number:'07'},
  {id:'proveedores',name:'Proveedores',number:'08'},
  {id:'pdd',name:'PDD',number:'09'}

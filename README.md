@@ -33,6 +33,10 @@ ACERVO_DIGITAL_GITHUB_CONECTADO/
 4. En **Settings → Pages**, selecciona **Deploy from a branch**, rama **main** y carpeta **/(root)**.
 5. Abre el enlace que indique GitHub Pages. Si actualizaste el proyecto, recarga con **Ctrl + F5**.
 
+## 06.1 · Filtro de INFOGOB
+
+Carga el PDF del filtro de INFOGOB en **Documentos generales**. Se incluye como documento obligatorio después de **RNSSC (sanciones)** y antes de **SIREP (nepotismo)**.
+
 ## 09 · PDD con observación
 
 Marca **PDD con observación** para habilitar la carga de **Antecedentes penales** y **Antecedentes judiciales**. Puedes adjuntar uno o ambos, según corresponda. Los archivos se incluyen después del PDD y antes de la copia de CCP mientras la casilla esté marcada.
