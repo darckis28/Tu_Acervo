@@ -37,19 +37,25 @@
     <div class="pdd-observation">
      <label class="toggle-line"><input type="checkbox" id="hasPddObservation" aria-controls="pddAttachments"><span>PDD con observación</span></label>
      <div id="pddAttachments" hidden>
-      <p class="profile-mode-help">Adjunta los antecedentes que correspondan. Puedes cargar uno o ambos.</p>
+      <p class="upload-mode-help">Adjunta los antecedentes que correspondan. Puedes cargar uno o ambos.</p>
       <div id="pddAttachmentSlots"></div>
      </div>
     </div>
+    <fieldset class="upload-mode" id="ccpTdrUploadMode">
+     <legend>10 y 11 · Carga de CCP y TDR</legend>
+     <label class="toggle-line"><input type="radio" id="ccpTdrSeparate" name="ccpTdrMode" value="separado" checked> CCP y TDR por separado</label>
+     <label class="toggle-line"><input type="radio" id="ccpTdrCombined" name="ccpTdrMode" value="unico" aria-describedby="ccpTdrCombinedHelp"> CCP y TDR en un solo PDF</label>
+    </fieldset>
+    <p class="upload-mode-help" id="ccpTdrCombinedHelp" hidden>Sube un PDF con la copia de CCP primero y la copia de TDR después.</p>
     <div id="generalAfterPdd"></div>
    </div>
    <div class="group-label profile-label"><strong>12 · Sustentos del perfil</strong><span>Documentación complementaria</span></div>
-   <fieldset class="profile-upload-mode" id="profileUploadMode">
+   <fieldset class="upload-mode" id="profileUploadMode">
     <legend>¿Cómo quieres cargar los sustentos?</legend>
     <label class="toggle-line"><input type="radio" id="profileSeparate" name="profileMode" value="separado" checked> Por separado</label>
     <label class="toggle-line"><input type="radio" id="profileCombined" name="profileMode" value="unico" aria-describedby="profileCombinedHelp"> En un solo PDF</label>
    </fieldset>
-   <p class="profile-mode-help" id="profileCombinedHelp" hidden>Sube el PDF con todos los sustentos en el orden que deben aparecer.</p>
+   <p class="upload-mode-help" id="profileCombinedHelp" hidden>Sube el PDF con todos los sustentos en el orden que deben aparecer.</p>
    <div id="profileSlots"></div>
    <div class="adenda-chooser">
     <label class="toggle-line" for="hasAdenda"><input type="checkbox" id="hasAdenda"><span>¿Tiene adenda?</span></label>

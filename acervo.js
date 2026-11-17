@@ -1,11 +1,14 @@
 function activeProfileSlots(){
  return $('profileCombined').checked?[PROFILE_PDF]:PROFILE;
 }
+function activeCcpTdrSlots(){
+ return $('ccpTdrCombined').checked?[CCP_TDR_PDF]:CCP_TDR;
+}
 function activeSlots(){
  return [
   ...GENERAL_HASTA_PDD,
   ...($('hasPddObservation').checked?ANTECEDENTES_PDD:[]),
-  ...GENERAL_DESPUES_PDD,
+  ...activeCcpTdrSlots(),
   ...activeProfileSlots(),
   ...($('hasAdenda').checked?ADENDA:[])
  ];
@@ -53,7 +56,8 @@ function renderSlots(){
  $('generalThroughPdd').innerHTML=GENERAL_HASTA_PDD.map(slotItem).join('');
  $('pddAttachments').hidden=!$('hasPddObservation').checked;
  $('pddAttachmentSlots').innerHTML=ANTECEDENTES_PDD.map(slotItem).join('');
- $('generalAfterPdd').innerHTML=GENERAL_DESPUES_PDD.map(slotItem).join('');
+ $('generalAfterPdd').innerHTML=activeCcpTdrSlots().map(slotItem).join('');
+ $('ccpTdrCombinedHelp').hidden=!$('ccpTdrCombined').checked;
  $('profileSlots').innerHTML=activeProfileSlots().map(slotItem).join('');
  $('profileCombinedHelp').hidden=!$('profileCombined').checked;
  $('adendaSlots').innerHTML=ADENDA.map(slotItem).join('');
@@ -78,7 +82,10 @@ function updateStats(){
  $('openAcervoEditor').disabled=!getModeEntries('acervo').some(e=>e.pages>0&&!e.error)||isBusy;
 }
 function pickSlot(id){
- if(isBusy)return;const inp=document.createElement('input');inp.type='file';inp.accept='.pdf,application/pdf';inp.multiple=id!==PROFILE_PDF.id;
+ if(isBusy)return;
+ const slot=activeSlots().find(slot=>slot.id===id);
+ if(!slot)return;
+ const inp=document.createElement('input');inp.type='file';inp.accept='.pdf,application/pdf';inp.multiple=!slot.single;
  inp.addEventListener('change',()=>addFiles(id,Array.from(inp.files||[])));inp.click();
 }
 
@@ -113,6 +120,7 @@ function newAcervo(){
  }
  $('hasAdenda').checked=false;$('folioAcervo').checked=false;$('profileSeparate').checked=true;
  $('hasPddObservation').checked=false;
+ $('ccpTdrSeparate').checked=true;
  $('acervoStart').disabled=true;$('acervoDirection').disabled=true;$('acervoNoBack').disabled=true;$('acervoColor').disabled=true;
  renderSlots();updateSample('acervo');updateSample('single');switchTab('acervo');
  $('demoNote').classList.remove('show');

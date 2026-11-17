@@ -33,15 +33,17 @@ async function readCount(item){
  renderSlots();
 }
 function addFiles(id,files){
- if(isBusy||!activeSlots().some(slot=>slot.id===id))return;
- if(id===PROFILE_PDF.id&&files.length>1){
-  toast('Selecciona un solo PDF para los sustentos del perfil.','error');
+ if(isBusy)return;
+ const slot=activeSlots().find(slot=>slot.id===id);
+ if(!slot)return;
+ if(slot.single&&files.length>1){
+  toast('Selecciona un solo PDF para «'+slot.name+'».','error');
   return;
  }
  const valid=files.filter(validPdf);
  if(valid.length!==files.length)toast('Solo se admiten archivos PDF.','error');
  if(!valid.length)return;const target=bucket.get(id);
- if(id===PROFILE_PDF.id&&target.length)releasePreviewCache(target.pop());
+ if(slot.single&&target.length)releasePreviewCache(target.pop());
  for(const f of valid){const entry=makeEntry(f);target.push(entry);readCount(entry)}
  renderSlots();toast(valid.length+(valid.length===1?' PDF agregado.':' PDF agregados.'),'success');
 }
@@ -114,6 +116,7 @@ function updateSample(mode){
 function setBusy(value,mode){
  isBusy=value;const btn=$(mode==='acervo'?'generateAcervo':'generateSingle');btn.disabled=value;
  $('profileUploadMode').disabled=value;
+ $('ccpTdrUploadMode').disabled=value;
  $('hasPddObservation').disabled=value;
  $(mode==='acervo'?'generateAcervoText':'generateSingleText').textContent=value?'Procesando PDF…':(mode==='acervo'?'Unir y descargar acervo':'Foliar y descargar PDF');
  $(mode+'ProgressOuter').classList.toggle('hidden',!value);

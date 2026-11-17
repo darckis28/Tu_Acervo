@@ -37,6 +37,10 @@ ACERVO_DIGITAL_GITHUB_CONECTADO/
 
 Marca **PDD con observación** para habilitar la carga de **Antecedentes penales** y **Antecedentes judiciales**. Puedes adjuntar uno o ambos, según corresponda. Los archivos se incluyen después del PDD y antes de la copia de CCP mientras la casilla esté marcada.
 
+## 10 y 11 · Copias de CCP y TDR
+
+Puedes cargar las copias en dos campos separados o elegir **CCP y TDR en un solo PDF**. Para el archivo conjunto, coloca la copia de CCP antes de la de TDR. Puedes cambiar de opción sin perder los archivos cargados. Se incluyen los archivos de la opción seleccionada después del PDD y sus antecedentes, cuando correspondan.
+
 ## 12 · Sustentos del perfil
 
 - **Por separado** muestra cada tipo de sustento para cargar sus archivos.

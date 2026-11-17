@@ -16,10 +16,11 @@ const ANTECEDENTES_PDD=[
  {id:'pdd_penales',name:'Antecedentes penales',number:'09.1',optional:true},
  {id:'pdd_judiciales',name:'Antecedentes judiciales',number:'09.2',optional:true}
 ];
-const GENERAL_DESPUES_PDD=[
+const CCP_TDR=[
  {id:'ccp',name:'Copia de CCP',number:'10'},
  {id:'tdr',name:'Copia de TDR',number:'11'}
 ];
+const CCP_TDR_PDF={id:'ccp_tdr',name:'Copia de CCP y TDR',number:'10–11',single:true};
 const PROFILE=[
  {id:'ficha_cv',name:'Hoja de ficha de evaluación curricular (en caso de CLV)',number:'12.1',optional:true,conditional:true},
  {id:'formacion',name:'Formación académica',number:'12.2'},
@@ -42,7 +43,7 @@ const ADENDA=[
 ];
 const PROFILE_PDF={id:'perfil_completo',name:'Sustentos del perfil completos',number:'12',single:true};
 const bucket=new Map([
- ...GENERAL_HASTA_PDD,...ANTECEDENTES_PDD,...GENERAL_DESPUES_PDD,...PROFILE,PROFILE_PDF,...ADENDA
+ ...GENERAL_HASTA_PDD,...ANTECEDENTES_PDD,...CCP_TDR,CCP_TDR_PDF,...PROFILE,PROFILE_PDF,...ADENDA
 ].map(s=>[s.id,[]]));
 const $=id=>document.getElementById(id);
 const kb=n=>n>=1e6?(n/1e6).toFixed(1)+' MB':(n/1024).toFixed(0)+' KB';
