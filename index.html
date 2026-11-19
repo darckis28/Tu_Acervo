@@ -111,10 +111,14 @@
     <div class="editor-pagination"><button type="button" id="editorChunkPrev" aria-label="Ver grupo anterior">←</button><span id="editorChunkText">1 / 1</span><button type="button" id="editorChunkNext" aria-label="Ver grupo siguiente">→</button></div>
    </aside>
    <main class="editor-main">
-    <div class="editor-page-head"><div class="editor-page-ident"><strong id="editorFile">Archivo.pdf</strong><small id="editorPageLabel">Página 1</small></div><span id="editorStatus" class="editor-status">Sin folio</span></div>
+    <div class="editor-page-head"><div class="editor-page-ident"><strong id="editorFile">Archivo.pdf</strong><small id="editorPageLabel" aria-live="polite">Página 1</small></div><span id="editorStatus" class="editor-status">Sin folio</span></div>
     <div class="editor-view-zone"><div id="editorPaper" class="editor-paper"><canvas id="editorCanvas" class="hidden" aria-label="Imagen de la página PDF"></canvas><span id="editorFolioPreview" class="editor-folio hidden">0001</span><div id="editorCanvasMessage" class="canvas-message">Cargando vista previa…</div></div></div>
     <div class="editor-bottom">
      <div class="editor-arrows"><button type="button" id="editorPrev">← Anterior</button><button type="button" id="editorNext">Siguiente →</button></div>
+     <div class="editor-arrows editor-rotation" role="group" aria-label="Girar la hoja seleccionada">
+      <button type="button" id="editorRotateLeft">↶ Girar a la izquierda</button>
+      <button type="button" id="editorRotateRight">Girar a la derecha ↷</button>
+     </div>
      <div class="editor-actions"><label class="editor-skip-checkbox" for="editorSkipCheck"><input type="checkbox" id="editorSkipCheck"> <span>No foliar esta página</span></label><button type="button" id="editorDelete" class="editor-danger">Eliminar página</button></div>
      <p class="editor-help">Marca «No foliar» en las hojas que se conservarán sin numeración. «Eliminar» sí quita la página del PDF final; puedes restaurarla.</p>
     </div>

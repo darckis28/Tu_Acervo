@@ -50,13 +50,14 @@ body.modal-open{overflow:hidden}
 .editor-status{font-weight:780;border-radius:8px;font-size:11px;padding:6px 10px;background:var(--panel-alt);color:var(--muted);max-width:240px;text-align:center}
 .editor-status.with-folio{background:var(--ok-soft);color:var(--ok)}.editor-status.deleted{background:var(--danger-soft);color:var(--danger)}.editor-status.no-folio{background:var(--brand-soft);color:var(--brand)}
 .editor-view-zone{flex:1;min-height:0;overflow:auto;background:var(--bg-soft);display:flex;justify-content:center;align-items:flex-start;padding:20px}
-.editor-paper{position:relative;min-width:245px;min-height:320px;width:400px;height:535px;background:#fff;box-shadow:0 7px 21px rgba(0,0,0,.18);flex:0 0 auto;display:flex;justify-content:center;align-items:center}
+.editor-paper{position:relative;width:400px;height:535px;background:#fff;box-shadow:0 7px 21px rgba(0,0,0,.18);flex:0 0 auto;display:flex;justify-content:center;align-items:center}
 .editor-paper canvas{display:block}.editor-paper canvas.dimmed{opacity:.24}
 .editor-folio{position:absolute;z-index:2;top:16px;right:16px;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:700;line-height:1;pointer-events:none}
 .canvas-message{padding:18px;text-align:center;color:#596a7a;font-size:13px;max-width:340px}
 .editor-bottom{padding:12px 17px;border-top:1px solid var(--line)}
 .editor-arrows{display:flex;justify-content:space-between;gap:8px}.editor-arrows button,.editor-actions button{font-size:12px;border-radius:9px;padding:9px 12px;font-weight:750}
 .editor-arrows button{border:1px solid var(--line);color:var(--text);background:var(--panel-alt)}
+.editor-rotation{margin-top:8px}.editor-rotation button{flex:1}
 .editor-actions{display:flex;gap:9px;margin-top:10px}.editor-actions button{flex:1}
 .editor-skip{background:var(--brand-soft);color:var(--brand);border:1px solid var(--brand)}.editor-danger{background:var(--danger-soft);color:var(--danger);border:1px solid var(--danger)}
 .editor-help{font-size:10px;color:var(--muted);margin:7px 0 0;text-align:center}

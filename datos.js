@@ -49,6 +49,7 @@ const bucket=new Map([
 const $=id=>document.getElementById(id);
 const kb=n=>n>=1e6?(n/1e6).toFixed(1)+' MB':(n/1024).toFixed(0)+' KB';
 const four=n=>String(n).padStart(4,'0');
+const normalizarGiro=angle=>((angle%360)+360)%360;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const iconUpload='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 16V4m-4 4 4-4 4 4M5 15v5h14v-5"/></svg>';
 let singleEntry=null,isBusy=false,pdfLibPromise=null,pdfJsPromise=null,uid=0,toastTimer;
@@ -76,10 +77,16 @@ function pdfPrueba(paginas){
    'BT /F1 11 Tf 50 589 Td (Puedes borrar hojas, omitir folios y cambiar su color.) Tj ET',
    'BT /F1 10 Tf 50 45 Td (Creado por Andi Aguirre) Tj ET'
   ];
-  if(p.folio){instrucciones.push(`${r.toFixed(4)} ${g.toFixed(4)} ${b.toFixed(4)} rg`, `BT /F1 13 Tf 523 798 Td (${textoAscii(p.folio)}) Tj ET`)}
+  const rotation=p.rotation??0;
+  if(p.folio){
+   const size=12;
+   const {x,y}=folioPosition({x:0,y:0,width:595,height:842},rotation,p.folio.length*size*.556,size);
+   const matrices={0:'1 0 0 1',90:'0 1 -1 0',180:'-1 0 0 -1',270:'0 -1 1 0'};
+   instrucciones.push(`${r.toFixed(4)} ${g.toFixed(4)} ${b.toFixed(4)} rg`,`BT /F1 ${size} Tf ${matrices[rotation]} ${x} ${y} Tm (${textoAscii(p.folio)}) Tj ET`);
+  }
   const contenido=instrucciones.join('\n')+'\n';
   const pagina=nuevo('');const stream=nuevo(`<< /Length ${contenido.length} >>\nstream\n${contenido}endstream`);
-  objetos[pagina]=`<< /Type /Page /Parent ${raiz} 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 ${fuente} 0 R >> >> /Contents ${stream} 0 R >>`;
+  objetos[pagina]=`<< /Type /Page /Parent ${raiz} 0 R /MediaBox [0 0 595 842] /Rotate ${rotation} /Resources << /Font << /F1 ${fuente} 0 R >> >> /Contents ${stream} 0 R >>`;
   nodos.push(`${pagina} 0 R`);
  }
  objetos[catalogo]=`<< /Type /Catalog /Pages ${raiz} 0 R >>`;

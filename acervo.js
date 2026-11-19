@@ -13,7 +13,7 @@ function activeSlots(){
   ...($('hasAdenda').checked?ADENDA:[])
  ];
 }
-function makeEntry(file){return {id:++uid,file,name:file.name,size:file.size,pages:null,error:'',deleted:new Set(),skipped:new Set(),forced:new Set()}}
+function makeEntry(file){return {id:++uid,file,name:file.name,size:file.size,pages:null,error:'',deleted:new Set(),skipped:new Set(),forced:new Set(),rotations:new Map()}}
 function remainingPages(item){return item.pages===null?0:Math.max(0,item.pages-item.deleted.size)}
 function getModeOptions(mode){
  const acervo=mode==='acervo';

@@ -22,6 +22,7 @@ const miniaturaCache=new Map();
 let miniaturaVersion=0;
 let ultimaPaginaPrincipal='';
 const MINIATURAS_POR_GRUPO=12;
+const clavePagina=row=>row.item.id+':'+row.page+':'+row.rotation;
 function actualizarFolioPrincipal(row){
  const overlay=$('editorFolioPreview');
  overlay.textContent=row.folio||'';
@@ -38,7 +39,8 @@ function renderEditor(){
  editorChunk=Math.floor(editorIndex/MINIATURAS_POR_GRUPO);
  $('editorSummary').textContent=`${fullPlan.pageCount} páginas conservadas · ${fullPlan.eligibleCount} con folio · ${fullPlan.pageCount-fullPlan.eligibleCount} sin folio`;
  $('editorFile').textContent=current.item.name;
- $('editorPageLabel').textContent=`Hoja ${current.page} del archivo · ${current.finalPage?'posición '+current.finalPage+' del PDF final':'eliminada del PDF final'}`;
+ const giro={0:'',90:' · Giro de 90° a la derecha',180:' · Giro de 180°',270:' · Giro de 90° a la izquierda'};
+ $('editorPageLabel').textContent=`Hoja ${current.page} del archivo · ${current.finalPage?'posición '+current.finalPage+' del PDF final':'eliminada del PDF final'}${giro[current.rotation]}`;
  $('editorStatus').textContent=current.deleted?'Eliminada':current.folio?'Folio '+current.folio:current.reason;
  $('editorStatus').className='editor-status '+(current.deleted?'deleted':current.folio?'with-folio':'no-folio');
  $('editorDelete').textContent=current.deleted?'↶ Restaurar página':'🗑 Eliminar página';
@@ -47,6 +49,7 @@ function renderEditor(){
  $('editorSkipCheck').checked=!current.deleted&&!current.folio&&allow;
  $('editorPrev').disabled=editorIndex===0;
  $('editorNext').disabled=editorIndex===rows.length-1;
+ $('editorRotateLeft').disabled=$('editorRotateRight').disabled=current.deleted;
  $('editorChunkText').textContent=`Grupo ${editorChunk+1} de ${chunks}`;
  $('editorChunkPrev').disabled=editorChunk===0;
  $('editorChunkNext').disabled=editorChunk>=chunks-1;
@@ -55,7 +58,7 @@ function renderEditor(){
  const generation=++miniaturaVersion;
  $('editorPageList').innerHTML=localRows.map((row,i)=>{
   const ix=start+i,label=row.deleted?'Eliminada':row.folio?'Folio '+row.folio:'Sin folio';
-  const key=row.item.id+':'+row.page;
+  const key=clavePagina(row);
   const cached=miniaturaCache.get(key);
   const img=cached?`<img src="${cached}" alt="Miniatura de hoja ${row.page}" loading="lazy">`:'<span class="miniatura-espera">Cargando vista previa…</span>';
   return `<article class="miniatura-tarjeta ${ix===editorIndex?'chosen':''} ${row.deleted?'deleted':''}" data-key="${key}">
@@ -68,7 +71,7 @@ function renderEditor(){
   </article>`;
  }).join('');
  actualizarFolioPrincipal(current);
- const mainKey=current.item.id+':'+current.page;
+ const mainKey=clavePagina(current);
  if(ultimaPaginaPrincipal!==mainKey||$('editorCanvas').classList.contains('hidden')){
    ultimaPaginaPrincipal=mainKey;
    drawEditorPage(current);
@@ -80,7 +83,7 @@ function solicitarMiniaturas(rows,generation){
  requestAnimationFrame(async()=>{
   for(const row of rows){
    if(generation!==miniaturaVersion||!editorMode)return;
-   const key=row.item.id+':'+row.page;
+   const key=clavePagina(row);
    const host=Array.from($('editorPageList').querySelectorAll('[data-thumb]')).find(n=>n.dataset.thumb===key);
    if(!host)continue;
    try{
@@ -108,11 +111,23 @@ function solicitarMiniaturas(rows,generation){
   }
  });
 }
+function demoCanvas(canvas,width,height,rotation,scale){
+ const horizontal=rotation%180!==0;
+ canvas.width=Math.max(1,Math.round((horizontal?height:width)*scale));
+ canvas.height=Math.max(1,Math.round((horizontal?width:height)*scale));
+ const context=canvas.getContext('2d');
+ context.translate(canvas.width/2,canvas.height/2);
+ context.scale(scale,scale);
+ context.rotate(rotation*Math.PI/180);
+ context.translate(-width/2,-height/2);
+ context.fillStyle='#ffffff';context.fillRect(0,0,width,height);
+ return context;
+}
 async function crearMiniatura(row){
  const cv=document.createElement('canvas');
  if(row.item.isDemo){
-  cv.width=118;cv.height=166;
-  const ctx=cv.getContext('2d');ctx.fillStyle='#ffffff';ctx.fillRect(0,0,118,166);
+  const scale=row.rotation%180===0?1:118/166;
+  const ctx=demoCanvas(cv,118,166,row.rotation,scale);
   ctx.fillStyle='#2456d3';ctx.fillRect(10,12,98,3);
   ctx.fillStyle='#28344c';ctx.font='bold 9px Arial';ctx.fillText('ACERVO DIGITAL',10,27);
   ctx.font='9px Arial';ctx.fillText('Documento de ejemplo',10,45);
@@ -121,9 +136,10 @@ async function crearMiniatura(row){
  }else{
   const doc=await getPdfJsDoc(row.item);
   const page=await doc.getPage(row.page);
-  const base=page.getViewport({scale:1});
+  const rotation=normalizarGiro(page.rotate+row.rotation);
+  const base=page.getViewport({scale:1,rotation});
   const scale=Math.min(118/base.width,166/base.height);
-  const viewport=page.getViewport({scale});
+  const viewport=page.getViewport({scale,rotation});
   cv.width=Math.max(1,Math.round(viewport.width));cv.height=Math.max(1,Math.round(viewport.height));
   await page.render({canvasContext:cv.getContext('2d',{alpha:false}),viewport}).promise;
  }
@@ -131,6 +147,15 @@ async function crearMiniatura(row){
 }
 function changeEditorPage(delta){
  const rows=editorRows();editorIndex=Math.max(0,Math.min(rows.length-1,editorIndex+delta));renderEditor();
+}
+function rotateEditorPage(delta){
+ if(isBusy||!editorMode)return;
+ const row=editorRow();
+ if(!row||row.deleted)return;
+ const rotation=normalizarGiro(row.rotation+delta);
+ if(rotation)row.item.rotations.set(row.page,rotation);
+ else row.item.rotations.delete(row.page);
+ renderEditor();
 }
 function changeEditorChunk(delta){
  const rows=editorRows(),total=Math.ceil(rows.length/MINIATURAS_POR_GRUPO);
@@ -187,11 +212,14 @@ function drawEditorPage(row){
 }
 async function ejecutarDibujoPagina(row,version){
  if(version!==editorRenderVersion||!editorMode)return;
+ const canvas=$('editorCanvas'),hint=$('editorCanvasMessage'),overlay=$('editorFolioPreview'),paper=$('editorPaper');
+ const maxWidth=Math.min(610,Math.max(80,paper.parentElement.clientWidth-40));
  if(row.item.isDemo){
-  const canvas=$('editorCanvas'),hint=$('editorCanvasMessage'),overlay=$('editorFolioPreview'),paper=$('editorPaper');
-  const w=515,h=730;canvas.width=w;canvas.height=h;canvas.style.width=w+'px';canvas.style.height=h+'px';
-  paper.style.width=w+'px';paper.style.height=h+'px';
-  const c=canvas.getContext('2d');c.fillStyle='#ffffff';c.fillRect(0,0,w,h);
+  const width=515,height=730;
+  const scale=Math.min(1,maxWidth/(row.rotation%180===0?width:height));
+  const c=demoCanvas(canvas,width,height,row.rotation,scale);
+  paper.style.width=canvas.style.width=canvas.width+'px';
+  paper.style.height=canvas.style.height=canvas.height+'px';
   c.fillStyle='#2456d3';c.font='bold 18px Arial';c.fillText('ACERVO DIGITAL · DOCUMENTO DE EJEMPLO',35,90);
   c.fillStyle='#273247';c.font='bold 16px Arial';
   const n=row.item.demoLabel||row.item.name;
@@ -201,19 +229,19 @@ async function ejecutarDibujoPagina(row,version){
   c.font='14px Arial';c.fillStyle='#61718b';c.fillText('Página '+row.page+' · '+(row.page%2?'Frente':'Reverso'),35,y+45);
   c.fillStyle='#edf1f7';for(let i=0;i<10;i++)c.fillRect(35,y+92+i*34,410-(i%3)*45,7);
   c.fillStyle='#7c879e';c.font='12px Arial';c.fillText('Vista previa de ejemplo · Creado por Andi Aguirre',35,700);
-  overlay.style.fontSize='13px';overlay.style.top='30px';overlay.style.right='24px';overlay.textContent=row.folio||'';
+  overlay.style.fontSize=13*scale+'px';overlay.style.top=22*scale+'px';overlay.style.right=22*scale+'px';overlay.textContent=row.folio||'';
   overlay.style.color=getModeOptions(editorMode).color;overlay.classList.toggle('hidden',!row.folio||row.deleted);
   canvas.classList.toggle('dimmed',row.deleted);hint.classList.add('hidden');canvas.classList.remove('hidden');return;
  }
- const canvas=$('editorCanvas'),hint=$('editorCanvasMessage'),overlay=$('editorFolioPreview'),paper=$('editorPaper');
  hint.textContent='Preparando vista previa…';hint.classList.remove('hidden');
  canvas.classList.add('hidden');overlay.classList.add('hidden');
  try{
   const doc=await getPdfJsDoc(row.item);if(version!==editorRenderVersion||!editorMode)return;
   const page=await doc.getPage(row.page);if(version!==editorRenderVersion||!editorMode)return;
-  const view=page.getViewport({scale:1});
-  const scale=Math.min(1.48,Math.max(.2,Math.min(610/view.width,730/view.height)));
-  const viewport=page.getViewport({scale});
+  const rotation=normalizarGiro(page.rotate+row.rotation);
+  const view=page.getViewport({scale:1,rotation});
+  const scale=Math.min(1.48,maxWidth/view.width,730/view.height);
+  const viewport=page.getViewport({scale,rotation});
   const dpr=Math.min(2,window.devicePixelRatio||1);
   canvas.width=Math.max(1,Math.floor(viewport.width*dpr));canvas.height=Math.max(1,Math.floor(viewport.height*dpr));
   canvas.style.width=viewport.width+'px';canvas.style.height=viewport.height+'px';

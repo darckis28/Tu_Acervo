@@ -38,6 +38,8 @@ function init(){
  $('editorClose').addEventListener('click',closeEditor);
  $('pageEditor').addEventListener('click',e=>{if(e.target===$('pageEditor'))closeEditor()});
  $('editorPrev').addEventListener('click',()=>changeEditorPage(-1));$('editorNext').addEventListener('click',()=>changeEditorPage(1));
+ $('editorRotateLeft').addEventListener('click',()=>rotateEditorPage(-90));
+ $('editorRotateRight').addEventListener('click',()=>rotateEditorPage(90));
  $('editorChunkPrev').addEventListener('click',()=>changeEditorChunk(-1));$('editorChunkNext').addEventListener('click',()=>changeEditorChunk(1));
  $('editorPageList').addEventListener('click',e=>{
   const remove=e.target.closest('[data-remove-page]');if(remove){borrarPorIndice(Number(remove.dataset.removePage));return}

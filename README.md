@@ -33,6 +33,10 @@ ACERVO_DIGITAL_GITHUB_CONECTADO/
 4. En **Settings → Pages**, selecciona **Deploy from a branch**, rama **main** y carpeta **/(root)**.
 5. Abre el enlace que indique GitHub Pages. Si actualizaste el proyecto, recarga con **Ctrl + F5**.
 
+## Girar una hoja
+
+En la vista previa, selecciona la hoja y pulsa **Girar a la izquierda** o **Girar a la derecha**. Cada pulsación aplica un giro de 90° a esa hoja. El giro se muestra en la miniatura y se conserva en el PDF descargado.
+
 ## 06.1 · Filtro de INFOGOB
 
 Carga el PDF del filtro de INFOGOB en **Documentos generales**. Se incluye como documento obligatorio después de **RNSSC (sanciones)** y antes de **SIREP (nepotismo)**.

@@ -75,7 +75,7 @@ function buildPlan(mode){
   for(let page=1;page<=item.pages;page++){
    const deleted=item.deleted.has(page);
    if(!deleted)finalIndex++;
-   plan.push({item,page,deleted,finalPage:deleted?null:finalIndex,folio:null,reason:'',eligible:false});
+   plan.push({item,page,deleted,rotation:item.rotations.get(page)??0,finalPage:deleted?null:finalIndex,folio:null,reason:'',eligible:false});
   }
  }
  const eligible=[];
@@ -129,17 +129,23 @@ function pdfColor(hex,lib){
  const safe=/^#[0-9a-fA-F]{6}$/.test(hex)?hex:'#202a39';
  return lib.rgb(parseInt(safe.slice(1,3),16)/255,parseInt(safe.slice(3,5),16)/255,parseInt(safe.slice(5,7),16)/255);
 }
+function folioPosition({x,y,width,height},angle,textWidth,size){
+ const space=22;
+ if(angle===90)return {x:x+space+size,y:y+height-space-textWidth};
+ if(angle===180)return {x:x+space+textWidth,y:y+space+size};
+ if(angle===270)return {x:x+width-space-size,y:y+space+textWidth};
+ return {x:x+width-space-textWidth,y:y+height-space-size};
+}
 function folioOnPage(page,font,number,lib,color){
- const {width:w,height:h}=page.getSize(),txt=String(number),size=12,space=22;
- const textWidth=font.widthOfTextAtSize(txt,size);
- const angle=((page.getRotation().angle%360)+360)%360;
- let x,y,rotation=angle;
- if(angle===0){x=w-space-textWidth;y=h-space-size}
- else if(angle===90){x=space+size;y=h-space-textWidth}
- else if(angle===180){x=space+textWidth;y=space+size}
- else if(angle===270){x=w-space-size;y=space+textWidth}
- else{rotation=0;x=w-space-textWidth;y=h-space-size}
- page.drawText(txt,{x,y,font,size,color,rotate:lib.degrees(rotation),opacity:1});
+ const size=12;
+ const angle=normalizarGiro(page.getRotation().angle);
+ const media=page.getMediaBox(),crop=page.getCropBox();
+ const x=Math.max(media.x,crop.x),y=Math.max(media.y,crop.y);
+ const width=Math.min(media.x+media.width,crop.x+crop.width)-x;
+ const height=Math.min(media.y+media.height,crop.y+crop.height)-y;
+ const bounds=width>0&&height>0?{x,y,width,height}:media;
+ const position=folioPosition(bounds,angle,font.widthOfTextAtSize(number,size),size);
+ page.drawText(number,{...position,font,size,color,rotate:lib.degrees(angle),opacity:1});
 }
 function downloadPDF(bytes,filename){
  const blob=new Blob([bytes],{type:'application/pdf'}),url=URL.createObjectURL(blob),a=document.createElement('a');
@@ -166,7 +172,7 @@ async function exportPlan(mode){
    const paginas=plan.filter(p=>!p.deleted).map(p=>({
     titulo:p.item.demoLabel||p.item.name,
     detalle:`HOJA ${p.page} DEL ARCHIVO - ${p.page%2?'FRENTE':'REVERSO'}`,
-    folio:p.folio,color:opts.color
+    folio:p.folio,color:opts.color,rotation:p.rotation
    }));
    const bytes=pdfPrueba(paginas);
    downloadPDF(bytes,isAcervo?'ACERVO_DE_EJEMPLO.pdf':'PDF_DE_EJEMPLO_FOLIADO.pdf');
@@ -186,6 +192,8 @@ async function exportPlan(mode){
    const copies=await out.copyPages(src,selected.map(x=>x.page-1));
    for(let i=0;i<copies.length;i++){
     const dest=copies[i];out.addPage(dest);
+    const rotation=selected[i].rotation;
+    if(rotation)dest.setRotation(lib.degrees(normalizarGiro(dest.getRotation().angle+rotation)));
     if(selected[i].folio)folioOnPage(dest,font,selected[i].folio,lib,color);
     done++;
    }
